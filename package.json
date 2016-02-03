@@ -1,0 +1,12 @@
+{
+  "dependencies": {
+    "browser-sync": "^2.11.1",
+    "gulp": "^3.9.0",
+    "gulp-notify": "^2.2.0",
+    "gulp-plumber": "^1.0.1",
+    "gulp-util": "^3.0.7",
+    "gulp-watch": "^4.3.5",
+    "main-bower-files": "^2.11.1",
+    "rimraf": "^2.5.1"
+  }
+}

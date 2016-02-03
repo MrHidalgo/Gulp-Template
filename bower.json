@@ -1,0 +1,22 @@
+{
+  "name": "Template",
+  "description": "",
+  "main": "",
+  "authors": [
+    "MrHidalgo <Luckyhidalgo@gmail.com>"
+  ],
+  "license": "MIT",
+  "moduleType": [],
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "vendor/bower",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "^2.2.0"
+  }
+}
