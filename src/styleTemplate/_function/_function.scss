@@ -1,0 +1,57 @@
+/* Search val/key in object & return true || false
+========================================*/
+@function search-key($map, $keys...) {
+  @each $key in $keys {
+    @if not map-has-key($map, $key) {
+        @error "The value is not present in the object... watch [_varaible.scss]";
+      @return false;
+    }
+    $map: map-get($map, $key);
+  }
+
+  @return true;
+}
+
+
+/* Get value in object
+========================================*/
+@function get-value($map, $keys...) {
+  @if ($keys == 0) {
+    @error "'#{$keys}' is empty, check your arguments";
+  } @else {
+    @each $key in $keys {
+      $map : map_get($map, $key);
+    }
+  }
+
+  @return $map;
+}
+
+
+/* Render [px] to [em]
+========================================*/
+$browser-context: 16;
+
+@function render-pixel($pixels, $context: $browser-context) {
+  @if (unitless($pixels)) {
+    $pixels: $pixels * 1px;
+  }
+
+  @if (unitless($context)) {
+    $context: $context * 1px;
+  }
+
+  @return $pixels / $context * 1em;
+}
+
+
+/* Return value object
+========================================*/
+@function return-value($name, $key) {
+  @if search-key($object, $name, $key) {
+    @return get-value($object, $name, $key);
+  }
+
+    @error "Function COLORIZE : '#{$key}' not found!";
+  @return null;
+}

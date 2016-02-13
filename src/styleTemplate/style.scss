@@ -1,0 +1,17 @@
+@import "_template/import";
+
+body,
+html{
+  @include dimensions($width_all);
+
+  margin: 0;
+  overflow: hidden;
+}
+
+/*
+  MAIN ANIMATE STYLE
+========================================*/
+.animated {
+  animation-duration: .5s;
+  animation-fill-mode: both;
+}

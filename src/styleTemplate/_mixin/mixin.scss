@@ -1,0 +1,115 @@
+@import "_variable/variable";
+
+/* Dimensions:
+  - if one args, then [height] === [width - val];
+========================================*/
+@mixin dimensions
+(
+  $width,         /* width : [val] */
+  $height:$width  /* height : [val} */
+)
+{
+  width: $width;
+  height: $height;
+}
+
+
+
+/* Centered content/block
+========================================*/
+@mixin centeredBLock
+(
+  $position,      /* flex-direction : [row || column]*/
+  $alignItem:null /* centered item, default value - null */
+)
+{
+  display: flex;
+  flex-direction: $position;
+  align-items: $alignItem;
+  justify-content: center;
+}
+
+
+
+/* Keyframes [2 transform name]
+========================================*/
+@mixin moduleKeyframes
+(
+  $keyName,     /* animation name */
+  $options: ()  /* animation array value, set to val & insert the block */
+)
+{
+  $configuration: map-merge((), $options);
+
+  @keyframes #{$keyName} {
+    from{
+      opacity   : map-get($configuration, opacityStart);
+      transform : map-get($configuration, transformStart);
+      transform : map-get($configuration, transformDouble);
+    }
+    to{
+      opacity   : map-get($configuration, opacityEnd);
+      transform : map-get($configuration, transformEnd);
+    }
+  }
+}
+
+
+/* Border
+========================================*/
+@mixin border
+(
+  $place, /* place border, if == all: then only [border:] */
+  $width:null, /* border-width */
+  $color  /* border-color */
+){
+  $false: null;
+
+  @if ($place == 'all') {
+    border: $width solid $color;
+  }
+  @else if ($width == null) {
+    border-#{$place}: 1px solid $color;
+  }
+  @else {
+    border-#{$place}: $width solid $color;
+  }
+}
+
+
+
+/*
+  Text Shadow
+========================================*/
+@mixin textShadow
+(
+  $hoff, /* horizontal width */
+  $voff, /* vertical width */
+  $blur, /* blur */
+  $color /* text-shadow color */
+)
+{
+  text-shadow: $hoff $voff $blur $color;
+}
+
+
+
+/*
+  Box Shadow
+========================================*/
+@mixin boxShadow
+(
+  $inset, /* inset value */
+  $hoff,  /* horizontal width */
+  $voff,  /* vertical width */
+  $blur,  /* blur */
+  $color  /*box-shadow color */
+)
+{
+  @if ($inset == 'all') {
+    box-shadow: $hoff $voff $blur $color;
+  }
+  @else {
+    box-shadow: $inset $hoff $voff $blur $color;
+  }
+}
