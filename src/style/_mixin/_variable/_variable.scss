@@ -8,18 +8,19 @@
 $object : (
 
   color : (
-    white   : #fff,
-    black   : #000,
+    white     : #fff,
+    black     : #000,
   ),
 
   dimension : (
-    all   : 100%,
-    half  : 50%
+    all       : 100%,
+    half      : 50%
   )
 );
 
 
 $black      : return-value(color, black);
 $white      : return-value(color, white);
+
 $width_all  : return-value(dimension, all);
 $width_half : return-value(dimension, half);

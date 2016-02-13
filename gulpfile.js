@@ -8,17 +8,21 @@ var gulp            =   require('gulp'),
     browserSync     =   require('browser-sync'),        // LIVERELOAD & SERVER PROJECT
     util            =   require('gulp-util'),           // FOR WATCH ERROR
     plumber         =   require('gulp-plumber'),        // ERROR TRAPPING REALTIME
-    jshint          =   require('gulp-jshint'),         // JS HINT
     del             =   require('del'),                 // CLEAN [FOLDER, FILES]
     jade            =   require('gulp-jade'),           // JADE TEMPLATE
     scss            =   require('gulp-sass'),           // SASS
     prefixer        =   require('gulp-autoprefixer'),   // AUTOPREFIXER
     sourcemaps      =   require('gulp-sourcemaps'),     // SOURCEMAPS
+    uncss           =   require('gulp-uncss'),          // DELETE NOT USED CSS CLASS, ID, TAGS
     prettify        =   require('gulp-prettify'),       // REFORMAT CODE
     cssmin          =   require('gulp-minify-css'),     // MINIFY CSS FILE
     jsmin           =   require('gulp-uglifyjs'),       // MINIFY JS FILE
+    concat          =   require('gulp-concat'),         // CONCAT JS FILES
+    jshint          =   require('gulp-jshint'),         // JS HINT
     rename          =   require('gulp-rename'),         // RENAME FILES
     lazypipe        =   require('lazypipe'),            // PARTIAL PIPELINES
+    imagemin        =   require('gulp-imagemin'),       // IMG MINIFY
+    pngComp         =   require('imagemin-pngquant'),   // IMG COMPRESS
     reload          =   browserSync.reload;             // RELOAD
 
 
@@ -29,19 +33,30 @@ var path = {
     // FINISH FILE PROJECT
     dist: {
         //
-        jade    :   './dist/',
-        scss    :   './dist/style/',
-        font    :   './dist/style/',
-        script  :   './dist/script/'
+        jade        :   './dist/',
+        scss        :   './dist/style/',
+        font        :   './dist/style/',
+        script      :   './dist/script/',
+        image       :   './dist/image/',
+        imageIcon   :   './dist/image/icon'
     },
 
     // WORK FILES
     src: {
         //
         jade    :   './src/index.jade',
-        scss    :   './src/sassTemplate/**.scss',
-        font    :   './src/sassTemplate/_font/**.scss',
-        script  :   './src/script/**.js'
+        scss    :   './src/**/**.scss',
+        font    :   './src/**/_font/**.scss',
+        script      :   [
+            './src/**/**.js',
+            './src/**/**.js'
+        ],
+        image       :   [
+            './src/image/**.png',
+            './src/image/**.gif',
+            './src/image/**.jpg'
+        ],
+        imageIcon   :   './src/image/_icon/**.png'
     },
 
     // STREAM/WATCH FILE
@@ -49,17 +64,18 @@ var path = {
         //
         jade        :   './src/**.jade',
         jadeWatch   :   './src/**/**.jade',
-        scss        :   './src/sassTemplate/**.scss',
-        scssWatch   :   './src/sassTemplate/**/**.scss',
-        font        :   './src/sassTemplate/_font/**.scss',
-        script      :   './src/script/**.js'
+        scss        :   './src/**/**.scss',
+        scssWatch   :   './src/**/**/**.scss',
+        font        :   './src/**/_font/**.scss',
+        script      :   './src/**/**.js'
     },
 
     // CLEAN FOLDER
     clean       :   './dist/*',
     cleanScript :   './dist/script/*',
     cleanStyle  :   './dist/style/*',
-    cleanHtml   :   './dist/*.html'
+    cleanHtml   :   './dist/*.html',
+    cleanImage  :   './dist/image/*'
 };
 
 
@@ -81,6 +97,8 @@ var textExample = {
     buildScss       :   'build:scss',
     buildFont       :   'build:font',
     buildScript     :   'build:script',
+    buildImg        :   'build:image',
+    buildImgIcon    :   'build:imageIcon',
     buildMainFiles  :   'mainFiles',
 
     //CLEAN PROJECT FILES
@@ -88,6 +106,7 @@ var textExample = {
     cleanScript     :   'clean:script',
     cleanStyle      :   'clean:style',
     cleanHtml       :   'clean:html',
+    cleanImage      :   'clean:image',
     cleanProject    :   'clean:project',
 
     //MAIN BOWER FILES
@@ -110,7 +129,7 @@ var config = {
     server: {
         baseDir :   './dist'
     },
-    tunnel      :   'lucly',
+    tunnel      :   'lucky',
     online      :   true,
     notify      :   true,
     host        :   'localhost',
@@ -197,6 +216,9 @@ gulp.task(textExample.cleanStyle, function() {
 gulp.task(textExample.cleanScript, function() {
     del.sync(path.cleanScript);
 });
+gulp.task(textExample.cleanImage, function() {
+    del.sync(path.cleanImage);
+});
 
 
 /* WATCH FILES FOR RELOAD & SYNC
@@ -238,6 +260,33 @@ gulp.task(textExample.bowerJquery, function() {
 
 
 /*
+ IMAGE build
+==============================*/
+gulp.task(textExample.buildImg, function() {
+    gulp.src(
+        path.src.image
+        )
+        .pipe(imagemin(
+            {
+                progressive :   true,
+                interlaced  :   true
+            }
+        ))
+        .pipe(pngComp(
+            {
+                quality     : '65-80',
+                speed       : 3
+            }
+        )())
+        .pipe(
+            gulp.dest(
+                path.dist.image
+            )
+        )
+});
+
+
+/*
  SCRIPT build
  ==============================*/
 gulp.task(textExample.buildScript, function () {
@@ -251,15 +300,10 @@ gulp.task(textExample.buildScript, function () {
                 errorHundler : reportError
             }
         ))
-        .pipe(
-            jsmin()
-        )
-        .pipe(
-            rename(textExample.renameScript)
-        )
-        .pipe(
-            reloadTemplate()
-        )
+        .pipe(concat('**.js'))
+        .pipe(jsmin())
+        .pipe(rename(textExample.renameScript))
+        .pipe(reloadTemplate())
         .pipe(
             gulp.dest(
                 path.dist.script
@@ -281,18 +325,10 @@ gulp.task(textExample.buildFont, function() {
                 errorHundler : reportError
             }
         ))
-        .pipe(
-            sourcemaps.init()
-        )
-        .pipe(
-            optionsScssTemplate()
-        )
-        .pipe(
-            sourcemaps.write()
-        )
-        .pipe(
-            reloadTemplate()
-        )
+        .pipe(sourcemaps.init())
+        .pipe(optionsScssTemplate())
+        .pipe(sourcemaps.write())
+        .pipe(reloadTemplate())
         .pipe(
             gulp.dest(
                 path.dist.font
@@ -315,34 +351,27 @@ gulp.task(textExample.buildScss, function() {
                 errorHundler : reportError
             }
         ))
-        .pipe(
-            sourcemaps.init()
-        )
-        .pipe(
-            optionsScssTemplate()
-        )
-        .pipe(
-            prefixer(
-                {
-                    browsers         : ['last 3 versions'],
-                    cascade          : true
-                }
-            ))
-        .pipe(
-            sourcemaps.write()
-        )
-        .pipe(
-            cssmin(
-                {
-                    compatibility    : 'ie9'
-                }
-            ))
-        .pipe(
-            rename(textExample.renameStyle)
-        )
-        .pipe(
-            reloadTemplate()
-        )
+        .pipe(sourcemaps.init())
+        .pipe(optionsScssTemplate())
+        .pipe(prefixer(
+            {
+                browsers    : ['last 3 versions'],
+                cascade     : true
+            }
+        ))
+        .pipe(sourcemaps.write())
+        .pipe(uncss(
+            {
+                html        : './dist/index.html'
+            }
+        ))
+        .pipe(cssmin(
+            {
+                compatibility    : 'ie9'
+            }
+        ))
+        .pipe(rename(textExample.renameStyle))
+        .pipe(reloadTemplate())
         .pipe(
             gulp.dest(
                 path.dist.scss
@@ -364,24 +393,20 @@ gulp.task(textExample.buildJade, function() {
         )
         .pipe(plumber(
             {
-                errorHundler : reportError
+                errorHundler: reportError
             }
         ))
-        .pipe(
-            jade(
-                {
-                    locals      :   YOUR_LOCALS
-                }
-            ))
-        .pipe(
-            prettify(
-                {
-                    indent_size :   4
-                }
-            ))
-        .pipe(
-            reloadTemplate()
-        )
+        .pipe(jade(
+            {
+                locals      :   YOUR_LOCALS
+            }
+        ))
+        .pipe(prettify(
+            {
+                indent_size :   4
+            }
+        ))
+        .pipe(reloadTemplate())
         .pipe(
             gulp.dest(
                 path.dist.jade

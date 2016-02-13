@@ -3,7 +3,7 @@
 /* Dimensions:
   - if one args, then [height] === [width - val];
 ========================================*/
-@mixin dimensions
+@mixin mixinDimensions
 (
   $width,         /* width : [val] */
   $height:$width  /* height : [val} */
@@ -17,7 +17,7 @@
 
 /* Centered content/block
 ========================================*/
-@mixin centeredBLock
+@mixin mixinCenteredBLock
 (
   $position,      /* flex-direction : [row || column]*/
   $alignItem:null /* centered item, default value - null */
@@ -33,7 +33,7 @@
 
 /* Keyframes [2 transform name]
 ========================================*/
-@mixin moduleKeyframes
+@mixin mixinKeyframes
 (
   $keyName,     /* animation name */
   $options: ()  /* animation array value, set to val & insert the block */
@@ -57,7 +57,7 @@
 
 /* Border
 ========================================*/
-@mixin border
+@mixin mixinBorder
 (
   $place, /* place border, if == all: then only [border:] */
   $width:null, /* border-width */
@@ -81,7 +81,7 @@
 /*
   Text Shadow
 ========================================*/
-@mixin textShadow
+@mixin mixinTextShadow
 (
   $hoff, /* horizontal width */
   $voff, /* vertical width */
@@ -97,7 +97,7 @@
 /*
   Box Shadow
 ========================================*/
-@mixin boxShadow
+@mixin mixinBoxShadow
 (
   $inset, /* inset value */
   $hoff,  /* horizontal width */

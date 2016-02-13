@@ -15,3 +15,6 @@ html{
   animation-duration: .5s;
   animation-fill-mode: both;
 }
+.animated.infinite {
+  animation-iteration-count: infinite;
+}
