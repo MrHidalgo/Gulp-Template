@@ -160,6 +160,7 @@ var textExample = {
     //RENAME FILES
     renameScript    :   'script.min.js',
     renameStyle     :   'style.min.css',
+    renameStyleFont :   'font.min.css',
 
     //ERROR
     error           :   'error'
@@ -354,199 +355,99 @@ gulp.task(textExample.buildScript, function () {
 
 
 /*
- SCSS FONT build
+ STYLE FONT FUNCTION:
+ - set task name & path name;
+==============================*/
+var styleFontTask = function(taskName, pathName) {
+    gulp.task(taskName, function() {
+        gulp.src(
+            pathName
+            )
+            .pipe(plumber(
+                {
+                    errorHundler : reportError
+                }
+            ))
+            .pipe(sourcemaps.init())
+            .pipe(optionsScssTemplate())
+            .pipe(sourcemaps.write())
+            .pipe(rename(textExample.renameStyleFont))
+            .pipe(reloadTemplate())
+            .pipe(
+                gulp.dest(path.dist.font)
+            )
+            .on(textExample.error, reportError)
+    });
+};
+/*
+ FUNCTION FONT CALL:
+ SCSS:
+     - textExample.buildScssFont;
+     - path.src.scssFont;
+ LESS:
+    - textExample.buildLessFont;
+    - path.src.lessFont;
+ STYLUS:
+    - textExample.buildStylusFont;
+    - path.src.stylusFont;
  ==============================*/
-gulp.task(textExample.buildScssFont, function() {
-    gulp.src(
-        path.src.scssFont
-        )
-        .pipe(plumber(
-            {
-                errorHundler : reportError
-            }
-        ))
-        .pipe(sourcemaps.init())
-        .pipe(optionsScssTemplate())
-        .pipe(sourcemaps.write())
-        .pipe(reloadTemplate())
-        .pipe(
-            gulp.dest(path.dist.font)
-        )
-        .on(textExample.error, reportError)
-});
+styleFontTask(textExample.buildScssFont, path.src.scssFont);
 
 
 /*
- SCSS FILES build
+ STYLE FUNCTION:
+ - set task name & path name;
  ==============================*/
-gulp.task(textExample.buildScss, function() {
-    gulp.src(
-        path.src.scss
-        )
-        .pipe(plumber(
-            {
-                errorHundler : reportError
-            }
-        ))
-        .pipe(sourcemaps.init())
-        .pipe(optionsScssTemplate())
-        .pipe(prefixer(
-            {
-                browsers    : ['last 3 versions'],
-                cascade     : true
-            }
-        ))
-        .pipe(sourcemaps.write())
-        .pipe(uncss(
-            {
-                html        : './dist/index.html'
-            }
-        ))
-        .pipe(cssmin(
-            {
-                compatibility    : 'ie9'
-            }
-        ))
-        .pipe(rename(textExample.renameStyle))
-        .pipe(reloadTemplate())
-        .pipe(
-            gulp.dest(path.dist.style)
-        )
-        .on(textExample.error, reportError)
-});
-
-
+var styleMainTask = function(taskName, pathName) {
+    return gulp.task(taskName, function() {
+        gulp.src(
+            pathName
+            )
+            .pipe(plumber(
+                {
+                    errorHundler : reportError
+                }
+            ))
+            .pipe(sourcemaps.init())
+            .pipe(optionsScssTemplate())
+            .pipe(prefixer(
+                {
+                    browsers    : ['last 3 versions'],
+                    cascade     : true
+                }
+            ))
+            .pipe(sourcemaps.write())
+            .pipe(uncss(
+                {
+                    html        : './dist/index.html'
+                }
+            ))
+            .pipe(cssmin(
+                {
+                    compatibility    : 'ie9'
+                }
+            ))
+            .pipe(rename(textExample.renameStyle))
+            .pipe(reloadTemplate())
+            .pipe(
+                gulp.dest(path.dist.style)
+            )
+            .on(textExample.error, reportError)
+    });
+};
 /*
- LESS FONT build
+ FUNCTION CALL:
+ SCSS:
+ - textExample.buildScss;
+ - path.src.scss;
+ LESS:
+ - textExample.buildLess;
+ - path.src.less;
+ STYLUS:
+ - textExample.buildStylus;
+ - path.src.stylus;
  ==============================*/
-gulp.task(textExample.buildLessFont, function() {
-    gulp.src(
-        path.src.lessFont
-        )
-        .pipe(plumber(
-            {
-                errorHundler : reportError
-            }
-        ))
-        .pipe(sourcemaps.init())
-        .pipe(optionsScssTemplate())
-        .pipe(sourcemaps.write())
-        .pipe(reloadTemplate())
-        .pipe(
-            gulp.dest(path.dist.font)
-        )
-        .on(textExample.error, reportError)
-});
-
-
-/*
- LESS FILES build
- ==============================*/
-gulp.task(textExample.buildLess, function() {
-    gulp.src(
-        path.src.less
-        )
-        .pipe(plumber(
-            {
-                errorHundler : reportError
-            }
-        ))
-        .pipe(sourcemaps.init())
-        .pipe(optionsScssTemplate())
-        .pipe(prefixer(
-            {
-                browsers    : ['last 3 versions'],
-                cascade     : true
-            }
-        ))
-        .pipe(sourcemaps.write())
-        .pipe(uncss(
-            {
-                html        : './dist/index.html'
-            }
-        ))
-        .pipe(cssmin(
-            {
-                compatibility    : 'ie9'
-            }
-        ))
-        .pipe(rename(textExample.renameStyle))
-        .pipe(reloadTemplate())
-        .pipe(
-            gulp.dest(path.dist.style)
-        )
-        .on(textExample.error, reportError)
-});
-
-
-/*
- STYLUS FONT build
- ==============================*/
-gulp.task(textExample.buildStylusFont, function() {
-    gulp.src(
-        path.src.stylusFont
-        )
-        .pipe(plumber(
-            {
-                errorHundler : reportError
-            }
-        ))
-        .pipe(sourcemaps.init())
-        .pipe(optionsScssTemplate())
-        .pipe(sourcemaps.write())
-        .pipe(reloadTemplate())
-        .pipe(
-            gulp.dest(path.dist.font)
-        )
-        .on(textExample.error, reportError)
-});
-
-
-/*
- STYLUS FILES build
- ==============================*/
-gulp.task(textExample.buildStylus, function() {
-    gulp.src(
-        path.src.stylus
-        )
-        .pipe(plumber(
-            {
-                errorHundler : reportError
-            }
-        ))
-        .pipe(sourcemaps.init())
-        .pipe(stylus(
-            {
-                compress        : true,
-                linenos         : true,
-                'include css'   : true
-            }
-        ))
-        .pipe(optionsScssTemplate())
-        .pipe(prefixer(
-            {
-                browsers    : ['last 3 versions'],
-                cascade     : true
-            }
-        ))
-        .pipe(sourcemaps.write())
-        .pipe(uncss(
-            {
-                html        : './dist/index.html'
-            }
-        ))
-        .pipe(cssmin(
-            {
-                compatibility    : 'ie9'
-            }
-        ))
-        .pipe(rename(textExample.renameStyle))
-        .pipe(reloadTemplate())
-        .pipe(
-            gulp.dest(path.dist.style)
-        )
-        .on(textExample.error, reportError)
-});
+styleMainTask(textExample.buildScss, path.src.scss);
 
 
 /*
