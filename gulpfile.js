@@ -15,6 +15,8 @@ var gulp            =   require('gulp'),
     sourcemaps      =   require('gulp-sourcemaps'),     // SOURCEMAPS
     uncss           =   require('gulp-uncss'),          // DELETE NOT USED CSS CLASS, ID, TAGS
     prettify        =   require('gulp-prettify'),       // REFORMAT CODE
+    htmlhint        =   require("gulp-htmlhint"),       // VALIDATION HTML CODE
+    rigger          =   require('gulp-rigger'),         // Rigger is a build time include engine
     cssmin          =   require('gulp-minify-css'),     // MINIFY CSS FILE
     jsmin           =   require('gulp-uglifyjs'),       // MINIFY JS FILE
     concat          =   require('gulp-concat'),         // CONCAT JS FILES
@@ -33,7 +35,7 @@ var path = {
     // FINISH FILE PROJECT
     dist: {
     // JADE
-        jade        :   './dist/',
+        html        :   './dist/',
     // SCSS & SASS
         scss        :   './dist/style/',
         font        :   './dist/style/',
@@ -48,6 +50,8 @@ var path = {
     src: {
     // JADE
         jade    :   './src/html/JADE/**.jade',
+    // HTML
+        html    :   './src/html/HTML/**.html',
     // SCSS & SASS
         scss    :   './src/**/**.scss',
         font    :   './src/**/_font/**.scss',
@@ -70,6 +74,9 @@ var path = {
     // JADE & JADE WATCH FILE
         jade        :   './src/html/JADE/**.jade',
         jadeWatch   :   './src/html/JADE/**/**.jade',
+    // HTML
+        html        :   './src/html/HTML/**.html',
+        htmlWatch   :   './src/html/HTML/**/**.html',
     // SASS & SCSS WATCH FILE
         scss        :   './src/**/**.scss',
         scssWatch   :   './src/**/**/**.scss',
@@ -104,9 +111,14 @@ var textExample = {
     buildMainFiles  :   'mainFiles',
 
         buildJade       :   'build:jade',
+
+        buildHtml       :   'build:html',
+
         buildScss       :   'build:scss',
         buildFont       :   'build:font',
+
         buildScript     :   'build:script',
+
         buildImg        :   'build:image',
         buildImgIcon    :   'build:imageIcon',
 
@@ -391,13 +403,34 @@ gulp.task(textExample.buildScss, function() {
 
 
 /*
+ BUILD HTML TEMPLATE
+==============================*/
+gulp.task(textExample.buildHtml, function() {
+    gulp.src(
+            path.src.html
+        )
+        .pipe(plumber(
+            {
+                errorHundler: reportError
+            }
+        ))
+        .pipe(rigger())
+        .pipe(htmlhint())
+        .pipe(htmlhint.reporter())
+        .pipe(reloadTemplate())
+        .pipe(
+            gulp.dest(path.dist.html)
+        )
+        .on(textExample.error, reportError)
+});
+
+/*
  BUILD JADE TEMPLATE
- ==============================*/
+==============================*/
 gulp.task(textExample.buildJade, function() {
     var YOUR_LOCALS = {};
 
-    gulp
-        .src(
+    gulp.src(
             path.src.jade
         )
         .pipe(plumber(
@@ -418,7 +451,7 @@ gulp.task(textExample.buildJade, function() {
         .pipe(reloadTemplate())
         .pipe(
             gulp.dest(
-                path.dist.jade
+                path.dist.html
             )
         )
         .on(textExample.error, reportError)
@@ -441,9 +474,9 @@ gulp.task(textExample.buildMainFiles,
  ==============================*/
 gulp.task(textExample.build,
     [
-        textExample.buildJade,
-        textExample.buildScss,
-        textExample.buildFont,
+        //textExample.buildJade,
+        //textExample.buildScss,
+        //textExample.buildFont,
         textExample.buildScript
     ]
 );

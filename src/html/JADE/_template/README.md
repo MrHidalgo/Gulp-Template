@@ -1,4 +1,4 @@
 ## Jade templates:
-* header [link, meta.., title & etc];
-* footer [scripts];
+* head [link, meta.., title & etc];
+* foot [scripts];
 * layout [main files];
