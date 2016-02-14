@@ -59,9 +59,9 @@
 ========================================*/
 @mixin mixinBorder
 (
-  $place, /* place border, if == all: then only [border:] */
-  $width:null, /* border-width */
-  $color  /* border-color */
+  $place,     /* place border, if == all: then only [border:] */
+  $width,     /* border-width */
+  $color      /* border-color */
 ){
   $false: null;
 

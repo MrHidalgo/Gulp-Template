@@ -1,0 +1,1 @@
+### Sass is a scripting language that is interpreted into Cascading Style Sheets (CSS). SassScript is the scripting language itself.

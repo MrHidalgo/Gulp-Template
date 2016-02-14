@@ -1,0 +1,1 @@
+### Less (sometimes stylized as LESS) is a dynamic style sheet language that can be compiled into Cascading Style Sheets (CSS) and run on the client-side or server-side.

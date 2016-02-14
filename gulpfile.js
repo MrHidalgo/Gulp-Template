@@ -11,6 +11,9 @@ var gulp            =   require('gulp'),
     del             =   require('del'),                 // CLEAN [FOLDER, FILES]
     jade            =   require('gulp-jade'),           // JADE TEMPLATE
     scss            =   require('gulp-sass'),           // SASS
+    less            =   require('gulp-less'),           // LESS
+    stylus          =   require('gulp-stylus'),         // STYLUS
+    rework          =   require('gulp-rework'),         // REWORK
     prefixer        =   require('gulp-autoprefixer'),   // AUTOPREFIXER
     sourcemaps      =   require('gulp-sourcemaps'),     // SOURCEMAPS
     uncss           =   require('gulp-uncss'),          // DELETE NOT USED CSS CLASS, ID, TAGS
@@ -31,13 +34,12 @@ var gulp            =   require('gulp'),
 /* PATH FOR FILES
  =================================*/
 var path = {
-
     // FINISH FILE PROJECT
     dist: {
     // JADE
         html        :   './dist/',
     // SCSS & SASS
-        scss        :   './dist/style/',
+        style       :   './dist/style/',
         font        :   './dist/style/',
     // SCRIPTS
         script      :   './dist/script/',
@@ -49,12 +51,18 @@ var path = {
     // WORK FILES
     src: {
     // JADE
-        jade    :   './src/html/JADE/**.jade',
+        jade        :   './src/html/JADE/**.jade',
     // HTML
-        html    :   './src/html/HTML/**.html',
+        html        :   './src/html/HTML/**.html',
     // SCSS & SASS
-        scss    :   './src/**/**.scss',
-        font    :   './src/**/_font/**.scss',
+        scss        :   './src/style/SCSS/**.scss',
+        scssFont    :   './src/style/SCSS/_fonts/**.scss',
+    // LESS
+        less        :   './src/style/LESS/**.less',
+        lessFont    :   './src/style/LESS/_fonts/**.less',
+    // STYLUS
+        stylus      :   './src/style/STYLUS/**.styl',
+        stylusFont  :   './src/style/STYLUS/_fonts/**.styl',
     // SCRIPTS
         script      :   [
             './src/**/**.js',
@@ -74,13 +82,21 @@ var path = {
     // JADE & JADE WATCH FILE
         jade        :   './src/html/JADE/**.jade',
         jadeWatch   :   './src/html/JADE/**/**.jade',
-    // HTML
+    // HTML WATCH FILE
         html        :   './src/html/HTML/**.html',
         htmlWatch   :   './src/html/HTML/**/**.html',
     // SASS & SCSS WATCH FILE
-        scss        :   './src/**/**.scss',
-        scssWatch   :   './src/**/**/**.scss',
-        font        :   './src/**/_font/**.scss',
+        scss        :   './src/style/SCSS/**.scss',
+        scssWatch   :   './src/style/SCSS/**/**.scss',
+        scssFont    :   './src/style/SCSS/_fonts/**.scss',
+    // LESS WATCH FILE
+        less        :   './src/style/LESS/**.less',
+        lessWatch   :   './src/style/LESS/**/**.less',
+        lessFont    :   './src/style/LESS/_fonts/**.less',
+    // LESS WATCH FILE
+        stylus      :   './src/style/STYLUS/**.styl',
+        stylusWatch :   './src/style/STYLUS/**/**.styl',
+        stylusFont  :   './src/style/STYLUS/_fonts/**.styl',
     // SCRIPTS
         script      :   './src/**/**.js'
     },
@@ -115,7 +131,13 @@ var textExample = {
         buildHtml       :   'build:html',
 
         buildScss       :   'build:scss',
-        buildFont       :   'build:font',
+        buildScssFont   :   'build:scssfont',
+
+        buildLess       :   'build:less',
+        buildLessFont   :   'build:lessfont',
+
+        buildStylus     :   'build:stylus',
+        buildStylusFont :   'build:stylusfont',
 
         buildScript     :   'build:script',
 
@@ -247,12 +269,12 @@ gulp.task(textExample.cleanImage, function() {
 gulp.task(textExample.watch, function(){
     watch(
         [
-            path.watch.jade,
-            path.watch.jadeWatch,
-            path.watch.scss,
-            path.watch.scssWatch,
-            path.watch.font,
-            path.watch.script
+            //path.watch.jade,
+            //path.watch.jadeWatch,
+            //path.watch.scss,
+            //path.watch.scssWatch,
+            //path.watch.font,
+            //path.watch.script
         ],
         function() {
             gulp.start(textExample.build);
@@ -300,9 +322,7 @@ gulp.task(textExample.buildImg, function() {
             }
         )())
         .pipe(
-            gulp.dest(
-                path.dist.image
-            )
+            gulp.dest(path.dist.image)
         )
 });
 
@@ -311,9 +331,8 @@ gulp.task(textExample.buildImg, function() {
  SCRIPT build
  ==============================*/
 gulp.task(textExample.buildScript, function () {
-    gulp
-        .src(
-            path.src.script
+    gulp.src(
+        path.src.script
         )
         .pipe(jshint())
         .pipe(plumber(
@@ -323,23 +342,23 @@ gulp.task(textExample.buildScript, function () {
         ))
         .pipe(concat('**.js'))
         .pipe(jsmin())
-        .pipe(rename(textExample.renameScript))
+        .pipe(rename(
+            textExample.renameScript)
+        )
         .pipe(reloadTemplate())
         .pipe(
-            gulp.dest(
-                path.dist.script
-            )
+            gulp.dest(path.dist.script)
         )
         .on(textExample.error, reportError)
 });
 
+
 /*
  SCSS FONT build
  ==============================*/
-gulp.task(textExample.buildFont, function() {
-    gulp
-        .src(
-            path.src.font
+gulp.task(textExample.buildScssFont, function() {
+    gulp.src(
+        path.src.scssFont
         )
         .pipe(plumber(
             {
@@ -351,9 +370,7 @@ gulp.task(textExample.buildFont, function() {
         .pipe(sourcemaps.write())
         .pipe(reloadTemplate())
         .pipe(
-            gulp.dest(
-                path.dist.font
-            )
+            gulp.dest(path.dist.font)
         )
         .on(textExample.error, reportError)
 });
@@ -363,9 +380,8 @@ gulp.task(textExample.buildFont, function() {
  SCSS FILES build
  ==============================*/
 gulp.task(textExample.buildScss, function() {
-    gulp
-        .src(
-            path.src.scss
+    gulp.src(
+        path.src.scss
         )
         .pipe(plumber(
             {
@@ -394,9 +410,140 @@ gulp.task(textExample.buildScss, function() {
         .pipe(rename(textExample.renameStyle))
         .pipe(reloadTemplate())
         .pipe(
-            gulp.dest(
-                path.dist.scss
-            )
+            gulp.dest(path.dist.style)
+        )
+        .on(textExample.error, reportError)
+});
+
+
+/*
+ LESS FONT build
+ ==============================*/
+gulp.task(textExample.buildLessFont, function() {
+    gulp.src(
+        path.src.lessFont
+        )
+        .pipe(plumber(
+            {
+                errorHundler : reportError
+            }
+        ))
+        .pipe(sourcemaps.init())
+        .pipe(optionsScssTemplate())
+        .pipe(sourcemaps.write())
+        .pipe(reloadTemplate())
+        .pipe(
+            gulp.dest(path.dist.font)
+        )
+        .on(textExample.error, reportError)
+});
+
+
+/*
+ LESS FILES build
+ ==============================*/
+gulp.task(textExample.buildLess, function() {
+    gulp.src(
+        path.src.less
+        )
+        .pipe(plumber(
+            {
+                errorHundler : reportError
+            }
+        ))
+        .pipe(sourcemaps.init())
+        .pipe(optionsScssTemplate())
+        .pipe(prefixer(
+            {
+                browsers    : ['last 3 versions'],
+                cascade     : true
+            }
+        ))
+        .pipe(sourcemaps.write())
+        .pipe(uncss(
+            {
+                html        : './dist/index.html'
+            }
+        ))
+        .pipe(cssmin(
+            {
+                compatibility    : 'ie9'
+            }
+        ))
+        .pipe(rename(textExample.renameStyle))
+        .pipe(reloadTemplate())
+        .pipe(
+            gulp.dest(path.dist.style)
+        )
+        .on(textExample.error, reportError)
+});
+
+
+/*
+ STYLUS FONT build
+ ==============================*/
+gulp.task(textExample.buildStylusFont, function() {
+    gulp.src(
+        path.src.stylusFont
+        )
+        .pipe(plumber(
+            {
+                errorHundler : reportError
+            }
+        ))
+        .pipe(sourcemaps.init())
+        .pipe(optionsScssTemplate())
+        .pipe(sourcemaps.write())
+        .pipe(reloadTemplate())
+        .pipe(
+            gulp.dest(path.dist.font)
+        )
+        .on(textExample.error, reportError)
+});
+
+
+/*
+ STYLUS FILES build
+ ==============================*/
+gulp.task(textExample.buildStylus, function() {
+    gulp.src(
+        path.src.stylus
+        )
+        .pipe(plumber(
+            {
+                errorHundler : reportError
+            }
+        ))
+        .pipe(sourcemaps.init())
+        .pipe(stylus(
+            {
+                compress        : true,
+                linenos         : true,
+                'include css'   : true
+            }
+        ))
+        .pipe(optionsScssTemplate())
+        .pipe(prefixer(
+            {
+                browsers    : ['last 3 versions'],
+                cascade     : true
+            }
+        ))
+        .pipe(sourcemaps.write())
+        .pipe(uncss(
+            {
+                html        : './dist/index.html'
+            }
+        ))
+        .pipe(cssmin(
+            {
+                compatibility    : 'ie9'
+            }
+        ))
+        .pipe(rename(textExample.renameStyle))
+        .pipe(reloadTemplate())
+        .pipe(
+            gulp.dest(path.dist.style)
         )
         .on(textExample.error, reportError)
 });
@@ -407,7 +554,7 @@ gulp.task(textExample.buildScss, function() {
 ==============================*/
 gulp.task(textExample.buildHtml, function() {
     gulp.src(
-            path.src.html
+        path.src.html
         )
         .pipe(plumber(
             {
@@ -424,6 +571,7 @@ gulp.task(textExample.buildHtml, function() {
         .on(textExample.error, reportError)
 });
 
+
 /*
  BUILD JADE TEMPLATE
 ==============================*/
@@ -431,7 +579,7 @@ gulp.task(textExample.buildJade, function() {
     var YOUR_LOCALS = {};
 
     gulp.src(
-            path.src.jade
+        path.src.jade
         )
         .pipe(plumber(
             {
@@ -450,9 +598,7 @@ gulp.task(textExample.buildJade, function() {
         ))
         .pipe(reloadTemplate())
         .pipe(
-            gulp.dest(
-                path.dist.html
-            )
+            gulp.dest(path.dist.html)
         )
         .on(textExample.error, reportError)
 });
@@ -477,7 +623,7 @@ gulp.task(textExample.build,
         //textExample.buildJade,
         //textExample.buildScss,
         //textExample.buildFont,
-        textExample.buildScript
+        //textExample.buildScript
     ]
 );
 
