@@ -32,25 +32,31 @@ var path = {
 
     // FINISH FILE PROJECT
     dist: {
-        //
+    // JADE
         jade        :   './dist/',
+    // SCSS & SASS
         scss        :   './dist/style/',
         font        :   './dist/style/',
+    // SCRIPTS
         script      :   './dist/script/',
+    // IMAGE & IMAGE ICON
         image       :   './dist/image/',
-        imageIcon   :   './dist/image/icon'
+        imageIcon   :   './dist/image/icon/'
     },
 
     // WORK FILES
     src: {
-        //
-        jade    :   './src/index.jade',
+    // JADE
+        jade    :   './src/html/JADE/**.jade',
+    // SCSS & SASS
         scss    :   './src/**/**.scss',
         font    :   './src/**/_font/**.scss',
+    // SCRIPTS
         script      :   [
             './src/**/**.js',
             './src/**/**.js'
         ],
+    // IMAGE & IMAGE ICON
         image       :   [
             './src/image/**.png',
             './src/image/**.gif',
@@ -61,12 +67,14 @@ var path = {
 
     // STREAM/WATCH FILE
     watch:{
-        //
-        jade        :   './src/**.jade',
-        jadeWatch   :   './src/**/**.jade',
+    // JADE & JADE WATCH FILE
+        jade        :   './src/html/JADE/**.jade',
+        jadeWatch   :   './src/html/JADE/**/**.jade',
+    // SASS & SCSS WATCH FILE
         scss        :   './src/**/**.scss',
         scssWatch   :   './src/**/**/**.scss',
         font        :   './src/**/_font/**.scss',
+    // SCRIPTS
         script      :   './src/**/**.js'
     },
 
@@ -93,13 +101,14 @@ var textExample = {
     //BUILD PROJECT FILES
     build           :   'build',
     buildMain       :   'main',
-    buildJade       :   'build:jade',
-    buildScss       :   'build:scss',
-    buildFont       :   'build:font',
-    buildScript     :   'build:script',
-    buildImg        :   'build:image',
-    buildImgIcon    :   'build:imageIcon',
     buildMainFiles  :   'mainFiles',
+
+        buildJade       :   'build:jade',
+        buildScss       :   'build:scss',
+        buildFont       :   'build:font',
+        buildScript     :   'build:script',
+        buildImg        :   'build:image',
+        buildImgIcon    :   'build:imageIcon',
 
     //CLEAN PROJECT FILES
     cleanGlobal     :   'clean:global',

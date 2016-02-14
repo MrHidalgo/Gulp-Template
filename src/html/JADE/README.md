@@ -1,0 +1,1 @@
+### Jade is a terse language for writing HTML templates.

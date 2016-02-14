@@ -1,0 +1,1 @@
+### The main idea of BEM methodology is to speed development process up and ease the teamwork of developers.

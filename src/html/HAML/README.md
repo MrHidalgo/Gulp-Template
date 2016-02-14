@@ -1,0 +1,1 @@
+### Haml (HTML abstraction markup language) is based on one primary principle: markup should be beautiful.
