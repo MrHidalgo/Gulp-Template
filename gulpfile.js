@@ -28,6 +28,8 @@ var gulp            =   require('gulp'),
     lazypipe        =   require('lazypipe'),            // PARTIAL PIPELINES
     imagemin        =   require('gulp-imagemin'),       // IMG MINIFY
     pngComp         =   require('imagemin-pngquant'),   // IMG COMPRESS
+    _if             =   require('gulp-if'),             // IF WITH LAZYPIPE
+    _ifElse         =   require('gulp-if-else'),        // IF ELSE
     reload          =   browserSync.reload;             // RELOAD
 
 
@@ -214,30 +216,65 @@ var reportError = function(error) {
 /*
  TEMPLATE BLOCK [notify, reload]
  ==============================*/
-var reloadTemplate = lazypipe()
-    .pipe( function() {
-        return reload(
-            {
-                stream: true
-            }
-        );
-    })
-
+{
+    var reloadTemplate = lazypipe()
+        .pipe( function() {
+            return reload(
+                {
+                    stream: true
+                }
+            );
+        })
+}
 
 /*
- TEMPLATE BLOCK SASS
+ TEMPLATE BLOCK FOR SASS
  ==============================*/
-var optionsScssTemplate = lazypipe()
-    .pipe( function() {
-        return scss(
-            {
-                sourceMap        : true,
-                errLogToConsole  : true,
-                outputStyle      : 'compressed'
-            }
-        );
-    })
+{
+    var optionsScssTemplate = lazypipe()
+        .pipe( function() {
+            return scss(
+                {
+                    sourceMap        : true,
+                    errLogToConsole  : true,
+                    outputStyle      : 'compressed'
+                }
+            );
+        })
+}
 
+/*
+ TEMPLATE BLOCK FOR HTML
+ ==============================*/
+{
+    var htmlOptions = lazypipe()
+        .pipe(rigger)
+        .pipe(htmlhint)
+        .pipe(htmlhint.reporter)
+}
+
+/*
+ TEMPLATE BLOCK FOR JADE
+ ==============================*/
+{
+    var jadeOptions = lazypipe()
+        .pipe( function() {
+            var YOUR_LOCALS = {};
+
+            return jade(
+                {
+                    locals      :   YOUR_LOCALS
+                }
+            );
+        })
+        .pipe( function() {
+            return prettify(
+                {
+                    indent_size :   4
+                }
+            )
+        })
+}
 
 /* WEB-SERVER
  =================================*/
@@ -451,90 +488,79 @@ styleMainTask(textExample.buildScss, path.src.scss);
 
 
 /*
- BUILD HTML TEMPLATE
-==============================*/
-gulp.task(textExample.buildHtml, function() {
-    gulp.src(
-        path.src.html
-        )
-        .pipe(plumber(
-            {
-                errorHundler: reportError
-            }
-        ))
-        .pipe(rigger())
-        .pipe(htmlhint())
-        .pipe(htmlhint.reporter())
-        .pipe(reloadTemplate())
-        .pipe(
-            gulp.dest(path.dist.html)
-        )
-        .on(textExample.error, reportError)
-});
+ HTML FUNCTION:
+ - set task name & path name;
+ ==============================*/
+var htmlMainTaks = function(taskName, pathName) {
+    return gulp.task(taskName, function() {
+        var ifHtml  = taskName === 'build:html',
+            ifJade  = taskName === 'build:jade';
 
-
+        gulp.src(
+            pathName
+            )
+            .pipe(plumber(
+                {
+                    errorHundler: reportError
+                }
+            ))
+            .pipe(_if(ifHtml, htmlOptions()))
+            .pipe(_if(ifJade, jadeOptions()))
+            .pipe(reloadTemplate())
+            .pipe(
+                gulp.dest(path.dist.html)
+            )
+            .on(textExample.error, reportError)
+    });
+};
 /*
- BUILD JADE TEMPLATE
-==============================*/
-gulp.task(textExample.buildJade, function() {
-    var YOUR_LOCALS = {};
-
-    gulp.src(
-        path.src.jade
-        )
-        .pipe(plumber(
-            {
-                errorHundler: reportError
-            }
-        ))
-        .pipe(jade(
-            {
-                locals      :   YOUR_LOCALS
-            }
-        ))
-        .pipe(prettify(
-            {
-                indent_size :   4
-            }
-        ))
-        .pipe(reloadTemplate())
-        .pipe(
-            gulp.dest(path.dist.html)
-        )
-        .on(textExample.error, reportError)
-});
+ FUNCTION CALL:
+ HTML:
+ - textExample.buildHtml;
+ - path.src.html;
+ JADE:
+ - textExample.buildJade;
+ - path.src.jade;
+ ==============================*/
+htmlMainTaks(textExample.buildJade, path.src.jade);
 
 
 /*
  TASK FOR MAIN FILES
  ==============================*/
-gulp.task(textExample.buildMainFiles,
-    [
-        //JQUERY
-        textExample.bowerJquery
-    ]
-);
+{
+    gulp.task(textExample.buildMainFiles,
+        [
+            //JQUERY
+            textExample.bowerJquery
+        ]
+    );
+}
 
 
 /*
  MAIN BUILD "ALL TASK"
  ==============================*/
-gulp.task(textExample.build,
-    [
-        //textExample.buildJade,
-        //textExample.buildScss,
-        //textExample.buildFont,
-        //textExample.buildScript
-    ]
-);
+{
+    gulp.task(textExample.build,
+        [
+            //textExample.buildJade,
+            //textExample.buildScss,
+            //textExample.buildFont,
+            //textExample.buildScript
+        ]
+    );
+}
 
 
 /* MAIN TASK FOR PROJECT
  =================================*/
-gulp.task(textExample.buildMain,
-    [
-        textExample.build,
-        textExample.server,
-        textExample.watch
-    ]
-);
+{
+    gulp.task(textExample.buildMain,
+        [
+            textExample.build,
+            textExample.server,
+            textExample.watch
+        ]
+    );
+}
