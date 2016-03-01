@@ -10,17 +10,17 @@ var gulp            =   require('gulp'),
     plumber         =   require('gulp-plumber'),        // ERROR TRAPPING REALTIME
     del             =   require('del'),                 // CLEAN [FOLDER, FILES]
     jade            =   require('gulp-jade'),           // JADE TEMPLATE
-    scss            =   require('gulp-sass'),           // SASS
+    //scss            =   require('gulp-sass'),           // SASS
     less            =   require('gulp-less'),           // LESS
     stylus          =   require('gulp-stylus'),         // STYLUS
     rework          =   require('gulp-rework'),         // REWORK
-    prefixer        =   require('gulp-autoprefixer'),   // AUTOPREFIXER
+    //prefixer        =   require('gulp-autoprefixer'),   // AUTOPREFIXER
     sourcemaps      =   require('gulp-sourcemaps'),     // SOURCEMAPS
     uncss           =   require('gulp-uncss'),          // DELETE NOT USED CSS CLASS, ID, TAGS
     prettify        =   require('gulp-prettify'),       // REFORMAT CODE
     htmlhint        =   require("gulp-htmlhint"),       // VALIDATION HTML CODE
     rigger          =   require('gulp-rigger'),         // Rigger is a build time include engine
-    cssmin          =   require('gulp-minify-css'),     // MINIFY CSS FILE
+    //cssmin          =   require('gulp-minify-css'),     // MINIFY CSS FILE
     jsmin           =   require('gulp-uglifyjs'),       // MINIFY JS FILE
     concat          =   require('gulp-concat'),         // CONCAT JS FILES
     jshint          =   require('gulp-jshint'),         // JS HINT
@@ -32,140 +32,14 @@ var gulp            =   require('gulp'),
     reload          =   browserSync.reload;             // RELOAD
 
 
-/* PATH FOR FILES
+/* OBJECT PATH & COMMANDS
  =================================*/
-var path = {
-    // FINISH FILE PROJECT
-    dist: {
-    // JADE
-        html        :   './dist/',
-    // SCSS & SASS
-        style       :   './dist/style/',
-        font        :   './dist/style/',
-    // SCRIPTS
-        script      :   './dist/script/',
-    // IMAGE & IMAGE ICON
-        image       :   './dist/image/',
-        imageIcon   :   './dist/image/icon/'
-    },
+var path            =   require('./gulp-files/gulp-path.js'),
+    commands        =   require('./gulp-files/gulp-command.js'),
+    template        =   require('./gulp-files/gulp-template.js'),
+    task            =   require('./gulp-files/gulp-task.js');
 
-    // WORK FILES
-    src: {
-    // JADE
-        jade        :   './src/html/JADE/**.jade',
-    // HTML
-        html        :   './src/html/HTML/**.html',
-    // SCSS & SASS
-        scss        :   './src/style/SCSS/**.scss',
-        scssFont    :   './src/style/SCSS/_fonts/**.scss',
-    // LESS
-        less        :   './src/style/LESS/**.less',
-        lessFont    :   './src/style/LESS/_fonts/**.less',
-    // STYLUS
-        stylus      :   './src/style/STYLUS/**.styl',
-        stylusFont  :   './src/style/STYLUS/_fonts/**.styl',
-    // SCRIPTS
-        script      :   [
-            './src/**/**.js',
-            './src/**/**.js'
-        ],
-    // IMAGE & IMAGE ICON
-        image       :   [
-            './src/image/**.png',
-            './src/image/**.gif',
-            './src/image/**.jpg'
-        ],
-        imageIcon   :   './src/image/_icon/**.png'
-    },
-
-    // STREAM/WATCH FILE
-    watch:{
-    // JADE & JADE WATCH FILE
-        jade        :   './src/html/JADE/**.jade',
-        jadeWatch   :   './src/html/JADE/**/**.jade',
-    // HTML WATCH FILE
-        html        :   './src/html/HTML/**.html',
-        htmlWatch   :   './src/html/HTML/**/**.html',
-    // SASS & SCSS WATCH FILE
-        scss        :   './src/style/SCSS/**.scss',
-        scssWatch   :   './src/style/SCSS/**/**.scss',
-        scssFont    :   './src/style/SCSS/_fonts/**.scss',
-    // LESS WATCH FILE
-        less        :   './src/style/LESS/**.less',
-        lessWatch   :   './src/style/LESS/**/**.less',
-        lessFont    :   './src/style/LESS/_fonts/**.less',
-    // LESS WATCH FILE
-        stylus      :   './src/style/STYLUS/**.styl',
-        stylusWatch :   './src/style/STYLUS/**/**.styl',
-        stylusFont  :   './src/style/STYLUS/_fonts/**.styl',
-    // SCRIPTS
-        script      :   './src/**/**.js'
-    },
-
-    // CLEAN FOLDER
-    clean       :   './dist/*',
-    cleanScript :   './dist/script/*',
-    cleanStyle  :   './dist/style/*',
-    cleanHtml   :   './dist/*.html',
-    cleanImage  :   './dist/image/*'
-};
-
-
-/* TEXT EXAMPLE
- =================================*/
-var textExample = {
-
-    //SERVER
-    server          :   'server',
-    tunnel          :   'tunnel',
-
-    //WATCH FILE
-    watch           :   'watch',
-
-    //BUILD PROJECT FILES
-    build           :   'build',
-    buildMain       :   'main',
-    buildMainFiles  :   'mainFiles',
-
-        buildJade       :   'build:jade',
-
-        buildHtml       :   'build:html',
-
-        buildScss       :   'build:scss',
-        buildScssFont   :   'build:scssfont',
-
-        buildLess       :   'build:less',
-        buildLessFont   :   'build:lessfont',
-
-        buildStylus     :   'build:stylus',
-        buildStylusFont :   'build:stylusfont',
-
-        buildScript     :   'build:script',
-
-        buildImg        :   'build:image',
-        buildImgIcon    :   'build:imageIcon',
-
-    //CLEAN PROJECT FILES
-    cleanGlobal     :   'clean:global',
-    cleanScript     :   'clean:script',
-    cleanStyle      :   'clean:style',
-    cleanHtml       :   'clean:html',
-    cleanImage      :   'clean:image',
-    cleanProject    :   'clean:project',
-
-    //MAIN BOWER FILES
-    bowerJquery     :   'main:jquery',
-    bowerJqueryMin  :   './dist/jquery.min.js',
-    bowerJqueryPath :   './dist/script',
-
-    //RENAME FILES
-    renameScript    :   'script.min.js',
-    renameStyle     :   'style.min.css',
-    renameStyleFont :   'font.min.css',
-
-    //ERROR
-    error           :   'error'
-};
+//console.log('test : ', template.test(3));
 
 
 /* SERVER CONFIG
@@ -183,180 +57,36 @@ var config = {
 };
 
 
-/* ERROR
- =================================*/
-var reportError = function(error) {
-    var lineNumber  = (error.lineNumber) ? 'LINE ' + error.lineNumber + ' -- ' : '',
-        report      = '',
-        chalk       = util.colors.white.bgRed;
 
-    notify(
-        {
-            title       : 'Task Failed [' + error.plugin + ']',
-            message     : lineNumber + 'See console.'
-        }
-    ).write(error);
-
-    report  =   chalk('TASK: ') + ' [' + error.plugin + ']\n';
-    report  =   chalk('PROB: ') + ' ' + error.message + '\n';
-
-    if (error.lineNumber) {
-        report +=   chalk('LINE: ') + ' ' + error.lineNumber + '\n';
-    }
-    if (error.fileName) {
-        report +=   chalk('FILE: ') + ' ' + error.fileName + '\n';
-    }
-
-    console.error(report);
-    this.emit('end');
-};
-
-
-/*
- TEMPLATE BLOCK [notify, reload]
- ==============================*/
-{
-    var reloadTemplate = lazypipe()
-        .pipe( function() {
-            return reload(
-                {
-                    stream: true
-                }
-            );
-        })
-}
-
-/*
- TEMPLATE BLOCK FOR SASS
- ==============================*/
-{
-    var optionsScssTemplate = lazypipe()
-        .pipe( function() {
-            return scss(
-                {
-                    sourceMap        : true,
-                    errLogToConsole  : true,
-                    outputStyle      : 'compressed'
-                }
-            );
-        })
-}
-
-/*
- TEMPLATE BLOCK FOR HTML
- ==============================*/
-{
-    var htmlOptions = lazypipe()
-        .pipe(rigger)
-        .pipe(htmlhint)
-        .pipe(htmlhint.reporter)
-}
-
-/*
- TEMPLATE BLOCK FOR JADE
- ==============================*/
-{
-    var jadeOptions = lazypipe()
-        .pipe( function() {
-            var YOUR_LOCALS = {};
-
-            return jade(
-                {
-                    locals      :   YOUR_LOCALS
-                }
-            );
-        })
-        .pipe( function() {
-            return prettify(
-                {
-                    indent_size :   4
-                }
-            )
-        })
-}
-
-/*
- TEMPLATE BLOCK FOR FONT STYLE
- ==============================*/
-{
-    var styleFontOptions = lazypipe()
-        .pipe( function() {
-            return rename(
-                textExample.renameStyleFont
-            )
-        })
-        .pipe(reloadTemplate)
-        .pipe(
-            gulp.dest, path.dist.font
-        )
-}
-
-/*
- TEMPLATE BLOCK FOR STYLE
- ==============================*/
-{
-    var styleFileOptions =lazypipe()
-        .pipe( function() {
-            return prefixer(
-                {
-                    browsers    : ['last 3 versions'],
-                    cascade     : true
-                }
-            )
-        })
-        .pipe( function() {
-            return uncss(
-                {
-                    html        : './dist/index.html'
-                }
-            )
-        })
-        .pipe( function() {
-            return cssmin(
-                {
-                    compatibility    : 'ie9'
-                }
-            )
-        })
-        .pipe( function() {
-            return rename(
-                textExample.renameStyle
-            )
-        })
-        .pipe(reloadTemplate)
-        .pipe(
-            gulp.dest, path.dist.style
-        )
-}
 /* WEB-SERVER
  =================================*/
-gulp.task(textExample.server, function() {
+gulp.task(commands.server, function() {
     browserSync(config);
 });
 
 
 /* CLEAN FOLDER PROJECT
  =================================*/
-gulp.task(textExample.cleanGlobal, function() {
+gulp.task(commands.cleanGlobal, function() {
     del.sync(path.clean);
 });
-gulp.task(textExample.cleanHtml, function() {
+gulp.task(commands.cleanHtml, function() {
     del.sync(path.cleanHtml);
 });
-gulp.task(textExample.cleanStyle, function() {
+gulp.task(commands.cleanStyle, function() {
     del.sync(path.cleanStyle);
 });
-gulp.task(textExample.cleanScript, function() {
+gulp.task(commands.cleanScript, function() {
     del.sync(path.cleanScript);
 });
-gulp.task(textExample.cleanImage, function() {
+gulp.task(commands.cleanImage, function() {
     del.sync(path.cleanImage);
 });
 
 
 /* WATCH FILES FOR RELOAD & SYNC
  =================================*/
-gulp.task(textExample.watch, function(){
+gulp.task(commands.watch, function(){
     watch(
         [
             //path.watch.jade,
@@ -367,26 +97,26 @@ gulp.task(textExample.watch, function(){
             //path.watch.script
         ],
         function() {
-            gulp.start(textExample.build);
+            gulp.start(commands.build);
         });
 });
 
 
 /* MAIN BOWER FILES
  =================================*/
-gulp.task(textExample.bowerJquery, function() {
+gulp.task(commands.bowerJquery, function() {
     var main = gulp.src(mainBowerFiles(
         {
             overrides: {
                 jquery : {
                     main : [
-                        textExample.bowerJqueryMin
+                        commands.bowerJqueryMin
                     ]
                 }
             }
         }
         ))
-        .pipe(gulp.dest(textExample.bowerJqueryPath))
+        .pipe(gulp.dest(commands.bowerJqueryPath))
 
     return main;
 });
@@ -395,22 +125,18 @@ gulp.task(textExample.bowerJquery, function() {
 /*
  IMAGE build
 ==============================*/
-gulp.task(textExample.buildImg, function() {
+gulp.task(commands.buildImg, function() {
     gulp.src(
         path.src.image
         )
-        .pipe(imagemin(
-            {
+        .pipe(imagemin({
                 progressive :   true,
                 interlaced  :   true
-            }
-        ))
-        .pipe(pngComp(
-            {
+            }))
+        .pipe(pngComp({
                 quality     : '65-80',
                 speed       : 3
-            }
-        )())
+            })())
         .pipe(
             gulp.dest(path.dist.image)
         )
@@ -420,121 +146,67 @@ gulp.task(textExample.buildImg, function() {
 /*
  SCRIPT build
  ==============================*/
-gulp.task(textExample.buildScript, function () {
+gulp.task(commands.buildScript, function () {
     gulp.src(
         path.src.script
         )
         .pipe(jshint())
-        .pipe(plumber(
-            {
+        .pipe(plumber({
                 errorHundler : reportError
-            }
-        ))
+            }))
         .pipe(concat('**.js'))
         .pipe(jsmin())
         .pipe(rename(
-            textExample.renameScript)
+            commands.renameScript)
         )
         .pipe(reloadTemplate())
         .pipe(
             gulp.dest(path.dist.script)
         )
-        .on(textExample.error, reportError)
+        .on(commands.error, template.reportError)
 });
 
-
-/*
- STYLE FUNCTION:
-     - set task name & path name, opt variable;
-     opt:
-     - 'style' || 'font';
- ==============================*/
-function styleMainTask(opt, taskName, pathName) {
-    gulp.task(taskName, function() {
-        var ifStyle = opt === 'font',
-            ifFont  = opt === 'style';
-
-        gulp.src(
-            pathName
-            )
-            .pipe(plumber(
-                {
-                    errorHundler : reportError
-                }
-            ))
-            .pipe(sourcemaps.init())
-            .pipe(optionsScssTemplate())
-            .pipe(sourcemaps.write())
-            .pipe(_if(ifStyle, styleFontOptions()))
-            .pipe(_if(ifFont, styleFileOptions()))
-            .on(textExample.error, reportError)
-    });
-};
 /*
  FUNCTION FONT CALL:
      SCSS:
-     - textExample.buildScssFont && path.src.scssFont;
+     - commands.buildScssFont && path.src.scssFont;
      LESS:
-     - textExample.buildLessFont && path.src.lessFont;
+     - commands.buildLessFont && path.src.lessFont;
      STYLUS:
-     - textExample.buildStylusFont && path.src.stylusFont;
+     - commands.buildStylusFont && path.src.stylusFont;
  FUNCTION STYLE CALL:
      SCSS:
-     - textExample.buildScss && path.src.scss;
+     - commands.buildScss && path.src.scss;
      LESS:
-     - textExample.buildLess && path.src.less;
+     - commands.buildLess && path.src.less;
      STYLUS:
-     - textExample.buildStylus && path.src.stylus;
+     - commands.buildStylus && path.src.stylus;
 ==============================*/
-styleMainTask('style', textExample.buildScss, path.src.scss);
+task.styleMainTask('style', commands.buildScss, path.src.scss);
 
 
-/*
- HTML FUNCTION:
- - set task name & path name;
- ==============================*/
-function htmlMainTaks(opt, taskName, pathName) {
-    return gulp.task(taskName, function() {
-        var ifHtml = opt === 'html',
-            ifJade = opt === 'jade';
 
-        gulp.src(
-            pathName
-            )
-            .pipe(plumber(
-                {
-                    errorHundler: reportError
-                }
-            ))
-            .pipe(_if(ifHtml, htmlOptions()))
-            .pipe(_if(ifJade, jadeOptions()))
-            .pipe(reloadTemplate())
-            .pipe(
-                gulp.dest(path.dist.html)
-            )
-            .on(textExample.error, reportError)
-    });
-};
 /*
  FUNCTION CALL:
  HTML:
- - textExample.buildHtml;
+ - commands.buildHtml;
  - path.src.html;
  JADE:
- - textExample.buildJade;
+ - commands.buildJade;
  - path.src.jade;
  ==============================*/
-htmlMainTaks('jade', textExample.buildJade, path.src.jade);
+task.htmlMainTask('html', commands.buildHtml, path.src.html);
+
 
 
 /*
  TASK FOR MAIN FILES
  ==============================*/
 {
-    gulp.task(textExample.buildMainFiles,
+    gulp.task(commands.buildMainFiles,
         [
             //JQUERY
-            textExample.bowerJquery
+            commands.bowerJquery
         ]
     );
 }
@@ -544,12 +216,12 @@ htmlMainTaks('jade', textExample.buildJade, path.src.jade);
  MAIN BUILD "ALL TASK"
  ==============================*/
 {
-    gulp.task(textExample.build,
+    gulp.task(commands.build,
         [
-            //textExample.buildJade,
-            //textExample.buildScss,
-            //textExample.buildFont,
-            //textExample.buildScript
+            //commands.buildJade,
+            //commands.buildScss,
+            //commands.buildFont,
+            //commands.buildScript
         ]
     );
 }
@@ -558,11 +230,11 @@ htmlMainTaks('jade', textExample.buildJade, path.src.jade);
 /* MAIN TASK FOR PROJECT
  =================================*/
 {
-    gulp.task(textExample.buildMain,
+    gulp.task(commands.buildMain,
         [
-            textExample.build,
-            textExample.server,
-            textExample.watch
+            commands.build,
+            commands.server,
+            commands.watch
         ]
     );
 }
