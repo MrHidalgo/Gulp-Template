@@ -2,7 +2,7 @@
 
 body,
 html{
-  @include mixinDimensions($width_all);
+  @include _mixinDimensions($width_all);
 
   margin: 0;
   overflow: hidden;

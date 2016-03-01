@@ -29,7 +29,6 @@ var gulp            =   require('gulp'),
     imagemin        =   require('gulp-imagemin'),       // IMG MINIFY
     pngComp         =   require('imagemin-pngquant'),   // IMG COMPRESS
     _if             =   require('gulp-if'),             // IF WITH LAZYPIPE
-    _ifElse         =   require('gulp-if-else'),        // IF ELSE
     reload          =   browserSync.reload;             // RELOAD
 
 
@@ -276,6 +275,59 @@ var reportError = function(error) {
         })
 }
 
+/*
+ TEMPLATE BLOCK FOR FONT STYLE
+ ==============================*/
+{
+    var styleFontOptions = lazypipe()
+        .pipe( function() {
+            return rename(
+                textExample.renameStyleFont
+            )
+        })
+        .pipe(reloadTemplate)
+        .pipe(
+            gulp.dest, path.dist.font
+        )
+}
+
+/*
+ TEMPLATE BLOCK FOR STYLE
+ ==============================*/
+{
+    var styleFileOptions =lazypipe()
+        .pipe( function() {
+            return prefixer(
+                {
+                    browsers    : ['last 3 versions'],
+                    cascade     : true
+                }
+            )
+        })
+        .pipe( function() {
+            return uncss(
+                {
+                    html        : './dist/index.html'
+                }
+            )
+        })
+        .pipe( function() {
+            return cssmin(
+                {
+                    compatibility    : 'ie9'
+                }
+            )
+        })
+        .pipe( function() {
+            return rename(
+                textExample.renameStyle
+            )
+        })
+        .pipe(reloadTemplate)
+        .pipe(
+            gulp.dest, path.dist.style
+        )
+}
 /* WEB-SERVER
  =================================*/
 gulp.task(textExample.server, function() {
@@ -392,11 +444,16 @@ gulp.task(textExample.buildScript, function () {
 
 
 /*
- STYLE FONT FUNCTION:
- - set task name & path name;
-==============================*/
-var styleFontTask = function(taskName, pathName) {
+ STYLE FUNCTION:
+     - set task name & path name, opt variable;
+     opt:
+     - 'style' || 'font';
+ ==============================*/
+function styleMainTask(opt, taskName, pathName) {
     gulp.task(taskName, function() {
+        var ifStyle = opt === 'font',
+            ifFont  = opt === 'style';
+
         gulp.src(
             pathName
             )
@@ -408,93 +465,38 @@ var styleFontTask = function(taskName, pathName) {
             .pipe(sourcemaps.init())
             .pipe(optionsScssTemplate())
             .pipe(sourcemaps.write())
-            .pipe(rename(textExample.renameStyleFont))
-            .pipe(reloadTemplate())
-            .pipe(
-                gulp.dest(path.dist.font)
-            )
+            .pipe(_if(ifStyle, styleFontOptions()))
+            .pipe(_if(ifFont, styleFileOptions()))
             .on(textExample.error, reportError)
     });
 };
 /*
  FUNCTION FONT CALL:
- SCSS:
-     - textExample.buildScssFont;
-     - path.src.scssFont;
- LESS:
-    - textExample.buildLessFont;
-    - path.src.lessFont;
- STYLUS:
-    - textExample.buildStylusFont;
-    - path.src.stylusFont;
- ==============================*/
-styleFontTask(textExample.buildScssFont, path.src.scssFont);
-
-
-/*
- STYLE FUNCTION:
- - set task name & path name;
- ==============================*/
-var styleMainTask = function(taskName, pathName) {
-    return gulp.task(taskName, function() {
-        gulp.src(
-            pathName
-            )
-            .pipe(plumber(
-                {
-                    errorHundler : reportError
-                }
-            ))
-            .pipe(sourcemaps.init())
-            .pipe(optionsScssTemplate())
-            .pipe(prefixer(
-                {
-                    browsers    : ['last 3 versions'],
-                    cascade     : true
-                }
-            ))
-            .pipe(sourcemaps.write())
-            .pipe(uncss(
-                {
-                    html        : './dist/index.html'
-                }
-            ))
-            .pipe(cssmin(
-                {
-                    compatibility    : 'ie9'
-                }
-            ))
-            .pipe(rename(textExample.renameStyle))
-            .pipe(reloadTemplate())
-            .pipe(
-                gulp.dest(path.dist.style)
-            )
-            .on(textExample.error, reportError)
-    });
-};
-/*
- FUNCTION CALL:
- SCSS:
- - textExample.buildScss;
- - path.src.scss;
- LESS:
- - textExample.buildLess;
- - path.src.less;
- STYLUS:
- - textExample.buildStylus;
- - path.src.stylus;
- ==============================*/
-styleMainTask(textExample.buildScss, path.src.scss);
+     SCSS:
+     - textExample.buildScssFont && path.src.scssFont;
+     LESS:
+     - textExample.buildLessFont && path.src.lessFont;
+     STYLUS:
+     - textExample.buildStylusFont && path.src.stylusFont;
+ FUNCTION STYLE CALL:
+     SCSS:
+     - textExample.buildScss && path.src.scss;
+     LESS:
+     - textExample.buildLess && path.src.less;
+     STYLUS:
+     - textExample.buildStylus && path.src.stylus;
+==============================*/
+styleMainTask('style', textExample.buildScss, path.src.scss);
 
 
 /*
  HTML FUNCTION:
  - set task name & path name;
  ==============================*/
-var htmlMainTaks = function(taskName, pathName) {
+function htmlMainTaks(opt, taskName, pathName) {
     return gulp.task(taskName, function() {
-        var ifHtml  = taskName === 'build:html',
-            ifJade  = taskName === 'build:jade';
+        var ifHtml = opt === 'html',
+            ifJade = opt === 'jade';
 
         gulp.src(
             pathName
@@ -522,7 +524,7 @@ var htmlMainTaks = function(taskName, pathName) {
  - textExample.buildJade;
  - path.src.jade;
  ==============================*/
-htmlMainTaks(textExample.buildJade, path.src.jade);
+htmlMainTaks('jade', textExample.buildJade, path.src.jade);
 
 
 /*

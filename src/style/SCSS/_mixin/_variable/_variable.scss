@@ -6,7 +6,6 @@
   - dimension;
 ========================================*/
 $object : (
-
   color : (
     white     : #fff,
     black     : #000,
@@ -15,6 +14,21 @@ $object : (
   dimension : (
     all       : 100%,
     half      : 50%
+  ),
+
+  mediaBreackpoints : (
+    phone     : 480px,
+    tablet    : 768px,
+    desktop   : 992px,
+    large     : 1200px
+  ),
+
+  textValue : (
+    mobile    : 'mobile',
+    tablet    : 'tablet',
+    small     : 'small-desktop',
+    medium    : 'medium-desktop',
+    large     : 'large-desktop'
   )
 );
 
@@ -24,3 +38,14 @@ $white      : return-value(color, white);
 
 $width_all  : return-value(dimension, all);
 $width_half : return-value(dimension, half);
+
+$media_phone    : return-value(mediaBreackpoints, phone);
+$media_tablet   : return-value(mediaBreackpoints, tablet);
+$media_desktop  : return-value(mediaBreackpoints, desktop);
+$media_large    : return-value(mediaBreackpoints, large);
+
+$text-mobile    : return-value(textValue, mobile);
+$text-tablet    : return-value(textValue, tablet);
+$text-small     : return-value(textValue, small);
+$text-medium    : return-value(textValue, medium);
+$text-large     : return-value(textValue, large);
