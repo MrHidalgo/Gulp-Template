@@ -1,10 +1,17 @@
-var gulp        =   require('gulp'),
-    path        =   require('./gulp-path.js'),      // OBJECT PATH & COMMANDS
-    commands    =   require('./gulp-command.js'),
-    template    =   require('./gulp-template.js'),
-    _if             =   require('gulp-if'),
-    plumber         =   require('gulp-plumber'),
-    sourcemaps      =   require('gulp-sourcemaps');
+var gulp            =   require('gulp'),
+    path            =   require('./gulp-path.js'),      // OBJECT PATH & COMMANDS
+    commands        =   require('./gulp-command.js'),
+    template        =   require('./gulp-template.js'),
+    _if             =   require('gulp-if'),             // IF - ELSE
+    plumber         =   require('gulp-plumber'),        // ERROR
+    sourcemaps      =   require('gulp-sourcemaps'),     // SCSS
+    imagemin        =   require('gulp-imagemin'),       // IMAGE
+    pngComp         =   require('imagemin-pngquant'),
+    concat          =   require('gulp-concat'),         // JS FILES
+    jshint          =   require('gulp-jshint'),
+    jsmin           =   require('gulp-uglifyjs'),
+    rename          =   require('gulp-rename'),
+    util            =   require('gulp-util');
 
 
 /* ERROR
@@ -38,7 +45,8 @@ var reportError = function(error) {
 
 /*
  HTML FUNCTION:
- - set task name & path name;
+     opt:
+        - 'html' || 'jade';
  ==============================*/
 function htmlMainTask(opt, taskName, pathName) {
     return gulp.task(taskName, function() {
@@ -63,9 +71,8 @@ function htmlMainTask(opt, taskName, pathName) {
 
 /*
  STYLE FUNCTION:
- - set task name & path name, opt variable;
- opt:
- - 'style' || 'font';
+     opt:
+        - 'style' || 'font';
  ==============================*/
 function styleMainTask(opt, taskName, pathName) {
     gulp.task(taskName, function() {
@@ -87,5 +94,55 @@ function styleMainTask(opt, taskName, pathName) {
     });
 };
 
-module.exports.htmlMainTask     = htmlMainTask;
-module.exports.styleMainTask    = styleMainTask;
+/*
+ IMAGE FUNCTION:
+ ==============================*/
+function mainImageTask(taskName, pathName) {
+    return gulp.task(taskName, function() {
+        gulp.src(
+            pathName
+            )
+            .pipe(imagemin({
+                progressive :   true,
+                interlaced  :   true
+            }))
+            .pipe(pngComp({
+                quality     : '65-80',
+                speed       : 3
+            })())
+            .pipe(
+                gulp.dest(path.dist.image)
+            )
+    });
+}
+
+/*
+ SCRIPT FUNCTION:
+ ==============================*/
+function mainScriptTask(taskName, pathName) {
+    return gulp.task(taskName, function () {
+        gulp.src(
+            pathName
+            )
+            .pipe(jshint())
+            .pipe(plumber({
+                errorHundler : reportError
+            }))
+            .pipe(concat('**.js'))
+            .pipe(jsmin())
+            .pipe(rename(
+                commands.renameScript)
+            )
+            .pipe(template.reloadTemplate())
+            .pipe(
+                gulp.dest(path.dist.script)
+            )
+            .on(commands.error, reportError)
+    });
+}
+
+
+module.exports.htmlMainTask     =   htmlMainTask;
+module.exports.styleMainTask    =   styleMainTask;
+module.exports.mainImageTask    =   mainImageTask;
+module.exports.mainScriptTask   =   mainScriptTask;

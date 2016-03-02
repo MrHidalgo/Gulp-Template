@@ -65,7 +65,7 @@ var path = {
         stylusWatch :   './src/style/STYLUS/**/**.styl',
         stylusFont  :   './src/style/STYLUS/_fonts/**.styl',
         // SCRIPTS
-        script      :   './src/**/**.js'
+        script      :   './src/script/**.js'
     },
 
     // CLEAN FOLDER
