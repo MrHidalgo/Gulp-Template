@@ -1,6 +1,7 @@
 var gulp            =   require('gulp'),
     path            =   require('./gulp-path.js'),      // OBJECT PATH & COMMANDS
     commands        =   require('./gulp-command.js'),
+    configuration   =   require('./gulp-config.js'),    // CONFIGURATION FILE
     template        =   require('./gulp-template.js'),
     _if             =   require('gulp-if'),             // IF - ELSE
     plumber         =   require('gulp-plumber'),        // ERROR
@@ -56,9 +57,9 @@ function htmlMainTask(opt, taskName, pathName) {
         gulp.src(
             pathName
             )
-            .pipe(plumber({
-                errorHundler: reportError
-            }))
+            .pipe(plumber(
+                configuration._mainConfig.errorPlumber
+            ))
             .pipe(_if(ifHtml, template.htmlOptions()))
             .pipe(_if(ifJade, template.jadeOptions()))
             .pipe(template.reloadTemplate())
@@ -82,9 +83,9 @@ function styleMainTask(opt, taskName, pathName) {
         gulp.src(
             pathName
             )
-            .pipe(plumber({
-                errorHundler : reportError
-            }))
+            .pipe(plumber(
+                configuration._mainConfig.errorPlumber
+            ))
             .pipe(sourcemaps.init())
             .pipe(template.optionsScssTemplate())
             .pipe(sourcemaps.write())
@@ -102,14 +103,12 @@ function mainImageTask(taskName, pathName) {
         gulp.src(
             pathName
             )
-            .pipe(imagemin({
-                progressive :   true,
-                interlaced  :   true
-            }))
-            .pipe(pngComp({
-                quality     : '65-80',
-                speed       : 3
-            })())
+            .pipe(imagemin(
+                configuration._mainConfig.image.minify
+            ))
+            .pipe(pngComp(
+                configuration._mainConfig.image.compress
+            )())
             .pipe(
                 gulp.dest(path.dist.image)
             )
@@ -125,9 +124,9 @@ function mainScriptTask(taskName, pathName) {
             pathName
             )
             .pipe(jshint())
-            .pipe(plumber({
-                errorHundler : reportError
-            }))
+            .pipe(plumber(
+                configuration._mainConfig.errorPlumber
+            ))
             .pipe(concat('**.js'))
             .pipe(jsmin())
             .pipe(rename(
@@ -141,8 +140,9 @@ function mainScriptTask(taskName, pathName) {
     });
 }
 
-
+module.exports.reportError      =   reportError;
 module.exports.htmlMainTask     =   htmlMainTask;
 module.exports.styleMainTask    =   styleMainTask;
 module.exports.mainImageTask    =   mainImageTask;
 module.exports.mainScriptTask   =   mainScriptTask;
+

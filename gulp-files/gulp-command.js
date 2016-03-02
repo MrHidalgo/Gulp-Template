@@ -11,7 +11,6 @@ var commands = {
     //BUILD PROJECT FILES
     build           :   'build',
     buildMain       :   'main',
-    buildMainFiles  :   'mainFiles',
 
     buildJade       :   'build:jade',
 

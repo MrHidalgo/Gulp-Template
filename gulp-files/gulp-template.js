@@ -1,18 +1,19 @@
-var gulp        =   require('gulp'),
-    lazypipe    =   require('lazypipe'),            // LAZYPIPE
-    rigger      =   require('gulp-rigger'),         // HTML
-    htmlhint    =   require('gulp-htmlhint'),
-    jade        =   require('gulp-jade'),           // JADE
-    prettify    =   require('gulp-prettify'),
-    path        =   require('./gulp-path.js'),      // OBJECT PATH & COMMANDS
-    commands    =   require('./gulp-command.js'),
-    prefixer    =   require('gulp-autoprefixer'),   // CSS
-    scss        =   require('gulp-sass'),
-    uncss       =   require('gulp-uncss'),
-    cssmin      =   require('gulp-minify-css'),
-    rename      =   require('gulp-rename'),         // RENAME
-    browserSync =   require('browser-sync'),        // RELOAD
-    reload      =   browserSync.reload;
+var gulp            =   require('gulp'),
+    lazypipe        =   require('lazypipe'),            // LAZYPIPE
+    rigger          =   require('gulp-rigger'),         // HTML
+    htmlhint        =   require('gulp-htmlhint'),
+    jade            =   require('gulp-jade'),           // JADE
+    path            =   require('./gulp-path.js'),      // OBJECT PATH & COMMANDS
+    commands        =   require('./gulp-command.js'),
+    configuration   =   require('./gulp-config.js'),    // CONFIGURATION FILE
+    prefixer        =   require('gulp-autoprefixer'),   // CSS
+    scss            =   require('gulp-sass'),
+    uncss           =   require('gulp-uncss'),
+    cssmin          =   require('gulp-minify-css'),
+    rename          =   require('gulp-rename'),         // RENAME
+    browserSync     =   require('browser-sync'),        // RELOAD
+    reload          =   browserSync.reload;
+
 
 /*
  TEMPLATE BLOCK [notify, reload]
@@ -40,16 +41,9 @@ var gulp        =   require('gulp'),
 {
     var jadeOptions = lazypipe()
         .pipe( function() {
-            var YOUR_LOCALS = {};
-
-            return jade({
-                locals      :   YOUR_LOCALS
-            });
-        })
-        .pipe( function() {
-            return prettify({
-                indent_size :   4
-            })
+            return jade(
+                configuration._mainConfig.jade
+            );
         })
 }
 /*
@@ -58,11 +52,9 @@ var gulp        =   require('gulp'),
 {
     var optionsScssTemplate = lazypipe()
         .pipe( function() {
-            return scss({
-                sourceMap        : true,
-                errLogToConsole  : true,
-                outputStyle      : 'compressed'
-            });
+            return scss(
+                configuration._mainConfig.scss.sourceMap
+            );
         })
 }
 /*
@@ -86,20 +78,19 @@ var gulp        =   require('gulp'),
 {
     var styleFileOptions =lazypipe()
         .pipe( function() {
-            return prefixer({
-                    browsers    : ['last 3 versions'],
-                    cascade     : true
-                })
+            return prefixer(
+                configuration._mainConfig.scss.stylize.pref
+            )
         })
         .pipe( function() {
-            return uncss({
-                    html        : './dist/index.html'
-                })
+            return uncss(
+                configuration._mainConfig.scss.stylize.unstyle
+            )
         })
         .pipe( function() {
-            return cssmin({
-                    compatibility    : 'ie9'
-                })
+            return cssmin(
+                configuration._mainConfig.scss.stylize.minify
+            )
         })
         .pipe( function() {
             return rename(
@@ -115,9 +106,9 @@ var gulp        =   require('gulp'),
 /*
  MODULE EXPORTS...
  ==============================*/
-module.exports.reloadTemplate       = reloadTemplate;
-module.exports.htmlOptions          = htmlOptions;
-module.exports.jadeOptions          = jadeOptions;
-module.exports.optionsScssTemplate  = optionsScssTemplate;
-module.exports.styleFontOptions     = styleFontOptions;
-module.exports.styleFileOptions     = styleFileOptions;
+module.exports.reloadTemplate       =   reloadTemplate;
+module.exports.htmlOptions          =   htmlOptions;
+module.exports.jadeOptions          =   jadeOptions;
+module.exports.optionsScssTemplate  =   optionsScssTemplate;
+module.exports.styleFontOptions     =   styleFontOptions;
+module.exports.styleFileOptions     =   styleFileOptions;
