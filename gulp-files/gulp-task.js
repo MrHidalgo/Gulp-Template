@@ -1,5 +1,5 @@
 var gulp            =   require('gulp'),
-    sassdoc         =   require('sassdoc'),
+    sassdoc         =   require('sassdoc'),             // SASS DOCUMENTATION
     path            =   require('./gulp-path.js'),      // OBJECT PATH & COMMANDS
     commands        =   require('./gulp-command.js'),
     configuration   =   require('./gulp-config.js'),    // CONFIGURATION FILE
@@ -59,7 +59,7 @@ function htmlMainTask(opt, taskName, pathName) {
             pathName
             )
             .pipe(plumber(
-                configuration._mainConfig.errorPlumber
+                configuration.mainConfig.errorPlumber
             ))
             .pipe(_if(ifHtml, template.htmlOptions()))
             .pipe(_if(ifJade, template.jadeOptions()))
@@ -85,7 +85,7 @@ function styleMainTask(opt, taskName, pathName) {
             pathName
             )
             .pipe(plumber(
-                configuration._mainConfig.errorPlumber
+                configuration.mainConfig.errorPlumber
             ))
             .pipe(sourcemaps.init())
             .pipe(template.optionsScssTemplate())
@@ -105,10 +105,10 @@ function mainImageTask(taskName, pathName) {
             pathName
             )
             .pipe(imagemin(
-                configuration._mainConfig.image.minify
+                configuration.mainConfig.image.minify
             ))
             .pipe(pngComp(
-                configuration._mainConfig.image.compress
+                configuration.mainConfig.image.compress
             )())
             .pipe(
                 gulp.dest(path.dist.image)
@@ -126,7 +126,7 @@ function mainScriptTask(taskName, pathName) {
             )
             .pipe(jshint())
             .pipe(plumber(
-                configuration._mainConfig.errorPlumber
+                configuration.mainConfig.errorPlumber
             ))
             .pipe(concat('**.js'))
             .pipe(jsmin())
@@ -141,9 +141,22 @@ function mainScriptTask(taskName, pathName) {
     });
 }
 
+
+function sassDocumenation(taskName, pathName) {
+    return gulp.task(taskName, function() {
+        gulp.src(
+            pathName
+            )
+            .pipe(sassdoc(
+                configuration.mainConfig.sassdoc
+            ));
+    });
+}
+
 module.exports.reportError      =   reportError;
 module.exports.htmlMainTask     =   htmlMainTask;
 module.exports.styleMainTask    =   styleMainTask;
 module.exports.mainImageTask    =   mainImageTask;
 module.exports.mainScriptTask   =   mainScriptTask;
+module.exports.sassDocumenation =   sassDocumenation;
 

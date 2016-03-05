@@ -7,7 +7,7 @@ var commands    =   require('./gulp-command.js'),
 /*
  MAIN CONFIG FILES
  ==============================*/
-var _mainConfig                 = {
+var mainConfig                 = {
     // config server===============
     config                      : {
         server : {
@@ -106,10 +106,25 @@ var _mainConfig                 = {
             commands.server,
             commands.watch
         ]
+    },
+
+    // sass documentation=========
+    sassdoc                     : {
+        dest    : 'docs/sass',
+        verbose : true,
+        display : {
+            access      : ['public', 'private'],
+            alias       : true,
+            watermark   : true
+        },
+        groups  : {
+            function    : 'Function Group',
+            variable    : 'Variable Group'
+        }
     }
 };
 
 /*
  MODULE EXPORTS...
  ==============================*/
-module.exports._mainConfig   =   _mainConfig;
+module.exports.mainConfig   =   mainConfig;

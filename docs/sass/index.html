@@ -1,0 +1,38 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>SassDoc</title><link rel="stylesheet" href="assets/css/main.css"><link href="http://fonts.googleapis.com/css?family=Open+Sans:400,500,700" rel="stylesheet" type="text/css"><meta name="viewport" content="width=device-width"><meta content="IE=edge, chrome=1" http-equiv="X-UA-Compatible"><!-- Open Graph tags --><meta property="og:title" content="SassDoc - SassDoc"><meta property="og:type" content="website"><meta property="og:description" content="Release the docs!"><!-- Thanks to Sass-lang.com for the icons --><link href="assets/images/favicon.png" rel="shortcut icon"></head><body><aside class="sidebar" role="nav"><div class="sidebar__header"><h1 class="sidebar__title">SassDoc</h1></div><div class="sidebar__body"><button type="button" class="btn-toggle js-btn-toggle" data-alt="Open all">Close all</button><p class="sidebar__item sidebar__item--heading" data-slug="function"><a href="#function">Function Group</a></p><div><p class="sidebar__item sidebar__item--sub-heading" data-slug="function-function"><a href="#function-function">functions</a></p><ul class="list-unstyled"><li class="sidebar__item sassdoc__item" data-name="search-key()" data-type="function"><a href="#function-function-search-key()">search-key()</a></li></ul></div><p class="sidebar__item sidebar__item--heading" data-slug="variable"><a href="#variable">Variable Group</a></p><div><p class="sidebar__item sidebar__item--sub-heading" data-slug="variable-variable"><a href="#variable-variable">variables</a></p><ul class="list-unstyled"><li class="sidebar__item sassdoc__item" data-name="object" data-type="variable"><a href="#variable-variable-object">object</a></li></ul></div></div></aside><article class="main" role="main"><header class="header" role="banner"><div class="container"><div class="sassdoc__searchbar searchbar"><label for="js-search-input" class="visually-hidden">Search</label><div class="searchbar__form" id="js-search"><input name="search" type="search" class="searchbar__field" autocomplete="off" autofocus id="js-search-input" placeholder="Search"><ul class="searchbar__suggestions" id="js-search-suggestions"></ul></div></div></div></header><section class="main__section"><h1 class="main__heading" id="function"><div class="container">Function Group</div></h1><section class="main__sub-section" id="function-function"><h2 class="main__heading--secondary"><div class="container">functions</div></h2><section class="main__item container item" id="function-function-search-key()"><h3 class="item__heading"><a class="item__name" href="#function-search-key()">search-key()</a></h3><div class="item__code-wrapper"><pre class="item__code item__code--togglable language-scss" data-current-state="collapsed" data-expanded="@function search-key()($map: $object, $keys...: string, int, char... etc) { 
+  @each $key in $keys {
+    @if not map-has-key($map, $key) {
+        @error &quot;The value is not present in the object... watch [_varaible.scss]&quot;;
+      @return false;
+    }
+    $map: map-get($map, $key);
+  }
+
+  @return true;
+ }" data-collapsed="@function search-key()($map: $object, $keys...: string, int, char... etc) { ... }"><code>@function search-key()($map: $object, $keys...: string, int, char... etc) { ... }</code></pre></div><h3 class="item__sub-heading">Description</h3><div class="item__description"><p>Function returns a Boolean value, depending on the point of variable objects</p></div><h3 class="item__sub-heading">Parameters</h3><table class="item__parameters"><thead><tr><th scope="col"><span class="visually-hidden">parameter</span>Name</th><th scope="col"><span class="visually-hidden">parameter</span>Description</th><th scope="col"><span class="visually-hidden">parameter</span>Type</th><th scope="col"><span class="visually-hidden">parameter</span>Default value</th></tr></thead><tbody><tr class="item__parameter"><th scope="row" data-label="name"><code>$map</code></th><td data-label="desc"><p>The argument takes an object</p></td><td data-label="type"><code>Object</code></td><td data-label="default"><code>$object</code></td></tr><tr class="item__parameter"><th scope="row" data-label="name"><code>$keys...</code></th><td data-label="desc"><p>Can take any number of arguments</p></td><td data-label="type"><code>String</code> or <code>Number</code></td><td data-label="default"><code>string, int, char... etc</code></td></tr></tbody></table><h3 class="item__sub-heading">Returns</h3><div class="item__description item__description--inline"><code>Boolean</code> &mdash;<p>true if function search name in object, false &amp; error if failed</p></div><h3 class="item__sub-heading">Example</h3><div class="item__example example"><pre class="example__code language-scss"><code>@if (search-key($object, $name, $key)) {
+  @content
+}</code></pre></div><h3 class="item__sub-heading">Throws</h3><ul class="list-unstyled"><li><p>The value is not present in the object... watch [_varaible.scss]</p></li></ul><h3 class="item__sub-heading">Requires</h3><ul class="list-unstyled"><li class="item__description item__description--inline"><span class="item__cross-type">[variable]</span> <a href="#variable-object"><code>object</code></a></li></ul></section></section></section><section class="main__section"><h1 class="main__heading" id="variable"><div class="container">Variable Group</div></h1><section class="main__sub-section" id="variable-variable"><h2 class="main__heading--secondary"><div class="container">variables</div></h2><section class="main__item container item" id="variable-variable-object"><h3 class="item__heading"><a class="item__name" href="#variable-object">object</a></h3><div class="item__code-wrapper"><pre class="item__code language-scss"><code>$object: (
+  color : (
+    white     : #fff,
+    black     : #000,
+  ),
+
+  dimension : (
+    all       : 100%,
+    half      : 50%
+  ),
+
+  mediaBreackpoints : (
+    phone     : 480px,
+    tablet    : 768px,
+    desktop   : 992px,
+    large     : 1200px
+  ),
+
+  textValue : (
+    mobile    : &#39;mobile&#39;,
+    tablet    : &#39;tablet&#39;,
+    small     : &#39;small-desktop&#39;,
+    medium    : &#39;medium-desktop&#39;,
+    large     : &#39;large-desktop&#39;
+  )
+);</code></pre></div><h3 class="item__sub-heading">Used by</h3><ul class="list-unstyled"><li><span class="item__cross-type">[function]</span> <a href="#function-search-key()"><code>search-key()</code></a></li></ul></section></section></section><footer class="footer" role="contentinfo"><div class="container"><div class="footer__project-info project-info"><!-- Name and URL --><span class="project-info__name">SassDoc</span><!-- Version --><!-- License --></div><a class="footer__watermark" href="http://sassdoc.com"><img src="assets/images/logo_light_inline.svg" alt="SassDoc Logo"></a></div></footer></article><script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script><script>window.jQuery || document.write('<script src="assets/js/vendor/jquery.min.js"><\/script>')</script><script src="assets/js/main.min.js"></script></body></html>

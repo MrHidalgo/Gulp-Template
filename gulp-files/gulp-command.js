@@ -49,7 +49,10 @@ var commands = {
     renameStyleFont :   'font.min.css',
 
     //ERROR
-    error           :   'error'
+    error           :   'error',
+
+    // SASS DOCUMENTATION
+    sassdoc         :   'doc'
 };
 
 module.exports = commands;

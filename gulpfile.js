@@ -3,7 +3,6 @@
 /* NPM PACKAGES
  =================================*/
 var gulp            =   require('gulp'),
-    sassdoc         =   require('sassdoc'),
     mainBowerFiles  =   require('main-bower-files'),    // MAIN BOWER FILES (**.min.**)
     watch           =   require('gulp-watch'),          // WATCH FILE CHANGED
     browserSync     =   require('browser-sync'),        // LIVERELOAD & SERVER PROJECT
@@ -17,17 +16,11 @@ var path            =   require('./gulp-files/gulp-path.js'),       // PATH.. [/
     configuration   =   require('./gulp-files/gulp-config.js');     // CONFIGURATION FILES..
 
 
-gulp.task('doc', function() {
-    return gulp
-        .src('./src/style/**/**/*.scss')
-        .pipe(sassdoc());
-});
-
 /* WEB-SERVER ---> 'gulp server'
  =================================*/
 gulp.task(commands.server, function() {
     browserSync(
-        configuration._mainConfig.config
+        configuration.mainConfig.config
     );
 });
 
@@ -57,7 +50,7 @@ gulp.task(commands.server, function() {
  =================================*/
 gulp.task(commands.watch, function(){
     watch(
-        configuration._mainConfig.watchParameters.arr,
+        configuration.mainConfig.watchParameters.arr,
         function() {
             gulp.start(
                 commands.build
@@ -72,7 +65,7 @@ gulp.task(commands.watch, function(){
 gulp.task(commands.bowerJquery, function() {
     gulp.src(
         mainBowerFiles(
-            configuration._mainConfig.bower
+            configuration.mainConfig.bower
         ))
         .pipe(gulp.dest(
             commands.bowerJqueryPath)
@@ -119,6 +112,12 @@ task.mainScriptTask(commands.buildScript, path.src.script);
 task.mainImageTask(commands.buildImg, path.src.image);
 
 
+/*
+ FUNCTION SASS DOCUMENTATION: ---> 'gulp doc'
+ - commands.sassdoc & path.src.sassdoc;
+ ==============================*/
+task.sassDocumenation(commands.sassdoc, path.src.sassdoc);
+
 
 /*
  MAIN BUILD "ALL TASK": {in config} ---> 'gulp build'
@@ -128,7 +127,7 @@ task.mainImageTask(commands.buildImg, path.src.image);
 {
     gulp.task(
         commands.build,
-        configuration._mainConfig.build.arr
+        configuration.mainConfig.build.arr
     );
 }
 
@@ -139,6 +138,6 @@ task.mainImageTask(commands.buildImg, path.src.image);
 {
     gulp.task(
         commands.buildMain,
-        configuration._mainConfig.main.arr
+        configuration.mainConfig.main.arr
     );
 }

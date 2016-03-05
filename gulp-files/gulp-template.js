@@ -42,7 +42,7 @@ var gulp            =   require('gulp'),
     var jadeOptions = lazypipe()
         .pipe( function() {
             return jade(
-                configuration._mainConfig.jade
+                configuration.mainConfig.jade
             );
         })
 }
@@ -53,7 +53,7 @@ var gulp            =   require('gulp'),
     var optionsScssTemplate = lazypipe()
         .pipe( function() {
             return scss(
-                configuration._mainConfig.scss.sourceMap
+                configuration.mainConfig.scss.sourceMap
             );
         })
 }
@@ -79,17 +79,17 @@ var gulp            =   require('gulp'),
     var styleFileOptions =lazypipe()
         .pipe( function() {
             return prefixer(
-                configuration._mainConfig.scss.stylize.pref
+                configuration.mainConfig.scss.stylize.pref
             )
         })
         .pipe( function() {
             return uncss(
-                configuration._mainConfig.scss.stylize.unstyle
+                configuration.mainConfig.scss.stylize.unstyle
             )
         })
         .pipe( function() {
             return cssmin(
-                configuration._mainConfig.scss.stylize.minify
+                configuration.mainConfig.scss.stylize.minify
             )
         })
         .pipe( function() {

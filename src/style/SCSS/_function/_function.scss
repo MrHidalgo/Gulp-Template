@@ -5,16 +5,18 @@
 ////
 
 ///
-/// @name   search-key()
+/// Function returns a Boolean value, depending on the point of variable objects
+/// @name     search-key()
 ///
-/// @param  {Object} $map - The argument takes an object
-/// @arg    {String | Number} $keys... - Can take any number of arguments [string | int | char... etc]
+/// @param    {Object} $map [$object] - The argument takes an object
+/// @arg      {String | Number} $keys... [string, int, char... etc] - Can take any number of arguments
+/// @return   {Boolean} - true if function search name in object, false & error if failed
 ///
-/// @return {Boolean} - true if function search name in object, false & error if failed
+/// @require  $object
 ///
 /// @example
 ///     @if (search-key($object, $name, $key)) {
-///       @return get-value($object, $name, $key);
+///       @content
 ///     }
 ///
 @function search-key($map, $keys...) {

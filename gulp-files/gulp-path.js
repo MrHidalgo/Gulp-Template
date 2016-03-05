@@ -41,7 +41,9 @@ var path = {
             './src/image/**.gif',
             './src/image/**.jpg'
         ],
-        imageIcon   :   './src/image/_icon/**.png'
+        imageIcon   :   './src/image/_icon/**.png',
+        // SASS DOCUMENTATION
+        sassdoc     :   './src/style/**/**/*.scss'
     },
 
     // STREAM/WATCH FILE
