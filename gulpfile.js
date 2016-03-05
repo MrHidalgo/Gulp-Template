@@ -3,6 +3,7 @@
 /* NPM PACKAGES
  =================================*/
 var gulp            =   require('gulp'),
+    sassdoc         =   require('sassdoc'),
     mainBowerFiles  =   require('main-bower-files'),    // MAIN BOWER FILES (**.min.**)
     watch           =   require('gulp-watch'),          // WATCH FILE CHANGED
     browserSync     =   require('browser-sync'),        // LIVERELOAD & SERVER PROJECT
@@ -16,6 +17,11 @@ var path            =   require('./gulp-files/gulp-path.js'),       // PATH.. [/
     configuration   =   require('./gulp-files/gulp-config.js');     // CONFIGURATION FILES..
 
 
+gulp.task('doc', function() {
+    return gulp
+        .src('./src/style/**/**/*.scss')
+        .pipe(sassdoc());
+});
 
 /* WEB-SERVER ---> 'gulp server'
  =================================*/

@@ -1,4 +1,5 @@
 var gulp            =   require('gulp'),
+    sassdoc         =   require('sassdoc'),
     path            =   require('./gulp-path.js'),      // OBJECT PATH & COMMANDS
     commands        =   require('./gulp-command.js'),
     configuration   =   require('./gulp-config.js'),    // CONFIGURATION FILE

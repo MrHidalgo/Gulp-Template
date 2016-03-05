@@ -1,5 +1,22 @@
-/* Search val/key in object & return true || false
-========================================*/
+@import "../_variable/variable";
+
+////
+/// @group  Function
+////
+
+///
+/// @name   search-key()
+///
+/// @param  {Object} $map - The argument takes an object
+/// @arg    {String | Number} $keys... - Can take any number of arguments [string | int | char... etc]
+///
+/// @return {Boolean} - true if function search name in object, false & error if failed
+///
+/// @example
+///     @if (search-key($object, $name, $key)) {
+///       @return get-value($object, $name, $key);
+///     }
+///
 @function search-key($map, $keys...) {
   @each $key in $keys {
     @if not map-has-key($map, $key) {
@@ -12,9 +29,6 @@
   @return true;
 }
 
-
-/* Get value in object
-========================================*/
 @function get-value($map, $keys...) {
   @if ($keys == 0) {
     @error "'#{$keys}' is empty, check your arguments";
@@ -27,9 +41,6 @@
   @return $map;
 }
 
-
-/* Render [px] to [em]
-========================================*/
 $browser-context: 16;
 
 @function render-pixel($pixels, $context: $browser-context) {
@@ -45,8 +56,6 @@ $browser-context: 16;
 }
 
 
-/* Return value object
-========================================*/
 @function return-value($name, $key) {
   @if search-key($object, $name, $key) {
     @return get-value($object, $name, $key);
