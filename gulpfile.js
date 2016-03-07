@@ -25,7 +25,6 @@ gulp.task(commands.server, function() {
 });
 
 
-
 /* CLEAN FOLDER PROJECT
  =================================*/
 //gulp.task(commands.cleanGlobal, function() {
@@ -45,7 +44,6 @@ gulp.task(commands.server, function() {
 //});
 
 
-
 /* WATCH FILES FOR RELOAD & SYNC ---> 'gulp watch'
  =================================*/
 gulp.task(commands.watch, function(){
@@ -57,7 +55,6 @@ gulp.task(commands.watch, function(){
             );
         });
 });
-
 
 
 /* MAIN BOWER FILES ---> 'gulp main:jquery'
@@ -73,7 +70,6 @@ gulp.task(commands.bowerJquery, function() {
 });
 
 
-
 /*
  FUNCTION HTML/HTML-PREPROCESSOR CALL:  ---> 'gulp build:jade ||  ---> gulp build:html'
  HTML:
@@ -82,7 +78,6 @@ gulp.task(commands.bowerJquery, function() {
  - html || jade;
  ==============================*/
 task.htmlMainTask('jade', commands.buildJade, path.src.jade);
-
 
 
 /*
@@ -95,7 +90,6 @@ task.htmlMainTask('jade', commands.buildJade, path.src.jade);
     - style || font;
  ==============================*/
 task.styleMainTask('style', commands.buildScss, path.src.scss);
-
 
 
 /*

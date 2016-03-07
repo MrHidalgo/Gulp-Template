@@ -119,7 +119,8 @@ var mainConfig                 = {
         },
         groups  : {
             function    : 'Function Group',
-            variable    : 'Variable Group'
+            variable    : 'Variable Group',
+            mixin       : 'Mixin Group'
         }
     }
 };

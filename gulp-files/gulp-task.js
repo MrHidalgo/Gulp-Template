@@ -141,7 +141,9 @@ function mainScriptTask(taskName, pathName) {
     });
 }
 
-
+/*
+ SASS DOCUMENTATION FUNCTION:
+ ==============================*/
 function sassDocumenation(taskName, pathName) {
     return gulp.task(taskName, function() {
         gulp.src(
