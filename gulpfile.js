@@ -3,10 +3,11 @@
 /* NPM PACKAGES
  =================================*/
 var gulp            =   require('gulp'),
+    readline        =   require('readline'),
     mainBowerFiles  =   require('main-bower-files'),    // MAIN BOWER FILES (**.min.**)
     watch           =   require('gulp-watch'),          // WATCH FILE CHANGED
-    browserSync     =   require('browser-sync'),        // LIVERELOAD & SERVER PROJECT
-    del             =   require('del');                 // CLEAN [FOLDER, FILES]
+    browserSync     =   require('browser-sync');        // LIVERELOAD & SERVER PROJECT
+
 
 /* OBJECT PATH & COMMANDS [module]
  =================================*/
@@ -23,25 +24,6 @@ gulp.task(commands.server, function() {
         configuration.mainConfig.config
     );
 });
-
-
-/* CLEAN FOLDER PROJECT
- =================================*/
-//gulp.task(commands.cleanGlobal, function() {
-//    del.sync(path.clean);
-//});
-//gulp.task(commands.cleanHtml, function() {
-//    del.sync(path.cleanHtml);
-//});
-//gulp.task(commands.cleanStyle, function() {
-//    del.sync(path.cleanStyle);
-//});
-//gulp.task(commands.cleanScript, function() {
-//    del.sync(path.cleanScript);
-//});
-//gulp.task(commands.cleanImage, function() {
-//    del.sync(path.cleanImage);
-//});
 
 
 /* WATCH FILES FOR RELOAD & SYNC ---> 'gulp watch'

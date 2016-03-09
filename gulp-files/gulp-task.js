@@ -44,7 +44,6 @@ var reportError = function(error) {
     this.emit('end');
 };
 
-
 /*
  HTML FUNCTION:
      opt:
@@ -155,10 +154,11 @@ function sassDocumenation(taskName, pathName) {
     });
 }
 
-module.exports.reportError      =   reportError;
-module.exports.htmlMainTask     =   htmlMainTask;
-module.exports.styleMainTask    =   styleMainTask;
-module.exports.mainImageTask    =   mainImageTask;
-module.exports.mainScriptTask   =   mainScriptTask;
-module.exports.sassDocumenation =   sassDocumenation;
+
+module.exports.reportError                  =   reportError;
+module.exports.htmlMainTask                 =   htmlMainTask;
+module.exports.styleMainTask                =   styleMainTask;
+module.exports.mainImageTask                =   mainImageTask;
+module.exports.mainScriptTask               =   mainScriptTask;
+module.exports.sassDocumenation             =   sassDocumenation;
 

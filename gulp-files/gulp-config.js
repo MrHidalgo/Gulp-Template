@@ -108,7 +108,7 @@ var mainConfig                 = {
         ]
     },
 
-    // sass documentation=========
+    // sass documentation==========
     sassdoc                     : {
         dest    : 'docs/sass',
         verbose : true,
@@ -122,6 +122,25 @@ var mainConfig                 = {
             variable    : 'Variable Group',
             mixin       : 'Mixin Group'
         }
+    },
+
+    // choose user=================
+    prompt                      : {
+        html : [
+            'jade',
+            'haml',
+            'slim',
+            'bemhtml',
+            'bh',
+            'html',
+            'handlebars'
+        ],
+        style : [
+            'sass',
+            'less',
+            'stylus',
+            'rework'
+        ]
     }
 };
 

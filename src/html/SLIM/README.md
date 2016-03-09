@@ -1,0 +1,1 @@
+### Slim is a template language whose goal is reduce the syntax to the essential parts without becoming cryptic.
