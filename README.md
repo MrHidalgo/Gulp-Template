@@ -31,9 +31,9 @@ First you need to choose the technology that will be used to build the project (
 
     ./start-project.sh
 
-If cmd an error message:
+If cmd => {./start-project.sh} an error message:
 
-    sudo chmod +x #{bash fileName} => 'start-project.sh'
+    sudo chmod +x #{bash fileName} => 'eg : start-project.sh'
 
 Questions for the choice of technology (...after selecting the technology, and the rest removed from the project...):
 
@@ -41,6 +41,4 @@ Questions for the choice of technology (...after selecting the technology, and t
         Use JADE-/preprocessor in project!
     Select CSS-preprocessor  => [SASS, LESS, STYLUS, REWORK] > sass
         Use SASS-/preprocessor in project!
-
-
-
+        Thank you for choosing to continue!
