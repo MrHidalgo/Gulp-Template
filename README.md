@@ -29,18 +29,18 @@
 
 First you need to choose the technology that will be used to build the project (in terminal):
 
-    # Mb
-    #sudo chmod +x #{bash file name} => 'start-project.sh'
-
     ./start-project.sh
 
-    #When start you ask:
+If cmd an error message:
 
-        Select HTML-preprocessor => [HAML, JADE, SLIM, BEMHTML, BH, HTML, HANDLEBARS] > jade
-            Use JADE-/preprocessor in project!
-        Select CSS-preprocessor  => [SASS, LESS, STYLUS, REWORK] > sass
-            Use SASS-/preprocessor in project!
+    sudo chmod +x #{bash fileName} => 'start-project.sh'
 
-    #After selecting the technology, and the rest removed from the project..
+Questions for the choice of technology (...after selecting the technology, and the rest removed from the project...):
+
+    Select HTML-preprocessor => [HAML, JADE, SLIM, BEMHTML, BH, HTML, HANDLEBARS] > jade
+        Use JADE-/preprocessor in project!
+    Select CSS-preprocessor  => [SASS, LESS, STYLUS, REWORK] > sass
+        Use SASS-/preprocessor in project!
+
 
 
