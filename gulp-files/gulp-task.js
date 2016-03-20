@@ -77,8 +77,8 @@ function htmlMainTask(opt, taskName, pathName) {
  ==============================*/
 function styleMainTask(opt, taskName, pathName) {
     gulp.task(taskName, function() {
-        var ifStyle = opt === 'font',
-            ifFont  = opt === 'style';
+        var ifFont   = opt === 'font',
+            ifStyle  = opt === 'style';
 
         gulp.src(
             pathName
@@ -88,9 +88,9 @@ function styleMainTask(opt, taskName, pathName) {
             ))
             .pipe(sourcemaps.init())
             .pipe(template.optionsScssTemplate())
-            .pipe(sourcemaps.write())
-            .pipe(_if(ifStyle, template.styleFontOptions()))
-            .pipe(_if(ifFont, template.styleFileOptions()))
+            .pipe(sourcemaps.write('./maps'))
+            .pipe(_if(ifFont, template.styleFontOptions()))
+            .pipe(_if(ifStyle, template.styleFileOptions()))
             .on(commands.error, reportError)
     });
 };
@@ -155,10 +155,10 @@ function sassDocumenation(taskName, pathName) {
 }
 
 
-module.exports.reportError                  =   reportError;
-module.exports.htmlMainTask                 =   htmlMainTask;
-module.exports.styleMainTask                =   styleMainTask;
-module.exports.mainImageTask                =   mainImageTask;
-module.exports.mainScriptTask               =   mainScriptTask;
-module.exports.sassDocumenation             =   sassDocumenation;
+module.exports.reportError          =   reportError;
+module.exports.htmlMainTask         =   htmlMainTask;
+module.exports.styleMainTask        =   styleMainTask;
+module.exports.mainImageTask        =   mainImageTask;
+module.exports.mainScriptTask       =   mainScriptTask;
+module.exports.sassDocumenation     =   sassDocumenation;
 

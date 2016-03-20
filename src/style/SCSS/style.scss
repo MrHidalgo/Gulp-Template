@@ -1,8 +1,21 @@
-@import "_template/import";
+///
+/// IMPORT BLOCK
+///
+@import "_mixin/mixin";
+@import "_function/function";
 
+///
+/// VARIABLE BLOCK
+///
+$width_all  : return-value(dimension, all);
+
+
+///
+/// MAIN BLOCK
+///
 body,
 html{
-  @include _mixinDimensions($width_all);
+  @include mixinDimensions($width_all);
 
   margin: 0;
   overflow: hidden;

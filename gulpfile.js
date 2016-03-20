@@ -3,7 +3,6 @@
 /* NPM PACKAGES
  =================================*/
 var gulp            =   require('gulp'),
-    readline        =   require('readline'),
     mainBowerFiles  =   require('main-bower-files'),    // MAIN BOWER FILES (**.min.**)
     watch           =   require('gulp-watch'),          // WATCH FILE CHANGED
     browserSync     =   require('browser-sync');        // LIVERELOAD & SERVER PROJECT
@@ -23,19 +22,6 @@ gulp.task(commands.server, function() {
     browserSync(
         configuration.mainConfig.config
     );
-});
-
-
-/* WATCH FILES FOR RELOAD & SYNC ---> 'gulp watch'
- =================================*/
-gulp.task(commands.watch, function(){
-    watch(
-        configuration.mainConfig.watchParameters.arr,
-        function() {
-            gulp.start(
-                commands.build
-            );
-        });
 });
 
 
@@ -93,6 +79,19 @@ task.mainImageTask(commands.buildImg, path.src.image);
  - commands.sassdoc & path.src.sassdoc;
  ==============================*/
 task.sassDocumenation(commands.sassdoc, path.src.sassdoc);
+
+
+/* WATCH FILES FOR RELOAD & SYNC ---> 'gulp watch'
+ =================================*/
+gulp.task(commands.watch, function(){
+    watch(
+        configuration.mainConfig.watchParameters.arr,
+        function() {
+            gulp.start(
+                commands.build
+            );
+        });
+});
 
 
 /*
