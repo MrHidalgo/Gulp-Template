@@ -7,7 +7,8 @@
 ///
 /// VARIABLE BLOCK
 ///
-$width_all  : return-value(dimension, all);
+$width-all    : return-value(dimension, all);
+$color-white  : return-value(color, white);
 
 
 ///
@@ -15,16 +16,68 @@ $width_all  : return-value(dimension, all);
 ///
 body,
 html{
-  @include mixinDimensions($width_all);
-
-  margin: 0;
-  overflow: hidden;
+  @include mixinDimensions($width-all);
 }
 
+html {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+body{
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+
+  line-height: 1.42857143;
+  font-weight: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  background-color: $color-white;
+}
+
+* {
+  box-sizing: border-box;
+
+  &:before,
+  &:after {
+    box-sizing: border-box;
+  }
+}
+
+p,
+h1{
+  margin: 0;
+}
+
+ul{
+  li{
+    list-style: none;
+  }
+}
+
+a{
+  outline: none;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+
+///
+/// ANIMATION CLASS
+///
 .animated {
   animation-duration: .5s;
   animation-fill-mode: both;
 }
 .animated.infinite {
   animation-iteration-count: infinite;
+}
+.hiddenAnimated{
+  opacity: 0;
+}
+.visiblyAnimated{
+  opacity: 1;
 }

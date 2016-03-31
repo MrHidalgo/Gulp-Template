@@ -82,8 +82,8 @@ var mainConfig                 = {
     // watch=======================
     watchParameters             : {
         arr : [
-            path.watch.html,
-            path.watch.htmlWatch,
+            path.watch.jade,
+            path.watch.jadeWatch,
             path.watch.scss,
             path.watch.scssWatch,
             path.watch.script
