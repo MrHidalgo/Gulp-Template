@@ -1,7 +1,16 @@
 {
+  "name": "Gulp-Template",
+  "version": "0.01",
+  "description": "Gulp Template for Front-End",
+  "main": "./dist/index.html",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "author": "Andriy Kovalenko",
   "dependencies": {
     "browser-sync": "^2.11.1",
     "del": "^2.2.0",
+    "express": "^4.13.4",
     "gulp": "^3.9.0",
     "gulp-autoprefixer": "^3.1.0",
     "gulp-concat": "^2.6.0",
