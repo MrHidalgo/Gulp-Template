@@ -12,7 +12,8 @@ var gulp            =   require('gulp'),
     concat          =   require('gulp-concat'),         // JS FILES
     jshint          =   require('gulp-jshint'),
     jsmin           =   require('gulp-uglifyjs'),
-    rename          =   require('gulp-rename'),
+    rename          =   require('gulp-rename'),         // RENAME OUT.. FILES
+    notify          =   require("gulp-notify"),         // NOTIFY
     util            =   require('gulp-util');
 
 
@@ -86,11 +87,14 @@ function styleMainTask(opt, taskName, pathName) {
             .pipe(plumber(
                 configuration.mainConfig.errorPlumber
             ))
-            //.pipe(sourcemaps.init())
+            .pipe(sourcemaps.init())
             .pipe(template.optionsScssTemplate())
-            //.pipe(sourcemaps.write('./maps'))
             .pipe(_if(ifFont, template.styleFontOptions()))
             .pipe(_if(ifStyle, template.styleFileOptions()))
+            .pipe(sourcemaps.write('./maps'))
+            .pipe(
+                gulp.dest(path.dist.style)
+            )
             .on(commands.error, reportError)
     });
 };

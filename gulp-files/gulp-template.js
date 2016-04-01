@@ -54,7 +54,7 @@ var gulp            =   require('gulp'),
         .pipe( function() {
             return scss(
                 configuration.mainConfig.scss.sourceMap
-            );
+            ).on('error', scss.logError);
         })
 }
 /*
@@ -82,11 +82,11 @@ var gulp            =   require('gulp'),
                 configuration.mainConfig.scss.stylize.pref
             )
         })
-        //.pipe( function() {
+        // .pipe( function() {
         //    return uncss(
         //        configuration.mainConfig.scss.stylize.unstyle
         //    )
-        //})
+        // })
         .pipe( function() {
             return cssmin(
                 configuration.mainConfig.scss.stylize.minify
@@ -94,13 +94,12 @@ var gulp            =   require('gulp'),
         })
         .pipe( function() {
             return rename(
-                commands.renameStyle
+                {
+                    suffix : ".min"
+                }
             )
         })
         .pipe(reloadTemplate)
-        .pipe(
-            gulp.dest, path.dist.style
-        )
 }
 
 /*

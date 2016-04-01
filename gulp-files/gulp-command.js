@@ -45,7 +45,7 @@ var commands = {
 
     //RENAME FILES
     renameScript    :   'script.min.js',
-    renameStyle     :   'style.min.css',
+    // renameStyle     :   'style.min.css',
     renameStyleFont :   'font.min.css',
 
     //ERROR
