@@ -141,6 +141,18 @@ var mainConfig                 = {
             'stylus',
             'rework'
         ]
+    },
+
+    // sprites
+    sprites : {
+        imgName     : 'sprite.png',
+        cssName     : 'sprite.scss',
+        cssFormat   : 'scss',
+        algorithm   : 'diagonal',
+        padding     : 5,
+        cssVarMap   : function(sprite) {
+            sprite.name = 'sprite-' + sprite.name
+        }
     }
 };
 

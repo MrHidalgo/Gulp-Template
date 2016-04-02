@@ -14,6 +14,7 @@ var gulp            =   require('gulp'),
     jsmin           =   require('gulp-uglifyjs'),
     rename          =   require('gulp-rename'),         // RENAME OUT.. FILES
     notify          =   require("gulp-notify"),         // NOTIFY
+    spritesmith     =   require('gulp.spritesmith'),    // SPRITE
     util            =   require('gulp-util');
 
 
@@ -158,6 +159,23 @@ function sassDocumenation(taskName, pathName) {
     });
 }
 
+/*
+ SPRITE FUNCTION:
+ ==============================*/
+function imageSprites(taskName, pathName){
+    gulp.task(taskName, function() {
+        var spriteData =
+            gulp.src(pathName)
+                .pipe(spritesmith(
+                    configuration.mainConfig.sprites
+                ));
+
+        spriteData.img.pipe(gulp.dest('./dist/image/_sprite/'));
+        spriteData.css.pipe(gulp.dest('./dist/style/_sprite/'));
+    });
+}
+
+
 
 module.exports.reportError          =   reportError;
 module.exports.htmlMainTask         =   htmlMainTask;
@@ -165,4 +183,5 @@ module.exports.styleMainTask        =   styleMainTask;
 module.exports.mainImageTask        =   mainImageTask;
 module.exports.mainScriptTask       =   mainScriptTask;
 module.exports.sassDocumenation     =   sassDocumenation;
+module.exports.imageSprites         =   imageSprites;
 

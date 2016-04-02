@@ -43,7 +43,9 @@ var path = {
         ],
         imageIcon   :   './src/image/_icon/**.png',
         // SASS DOCUMENTATION
-        sassdoc     :   './src/style/**/**/*.scss'
+        sassdoc     :   './src/style/**/**/*.scss',
+        // SPRITES
+        sprites     :   './src/image/_icon/**.png'
     },
 
     // STREAM/WATCH FILE

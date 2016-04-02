@@ -47,6 +47,9 @@ var commands = {
     renameScript    :   'script.min.js',
     // renameStyle     :   'style.min.css',
     renameStyleFont :   'font.min.css',
+    
+    // SPRITES
+    sprites         :   'sprite',
 
     //ERROR
     error           :   'error',

@@ -81,6 +81,12 @@ task.mainImageTask(commands.buildImg, path.src.image);
 task.sassDocumenation(commands.sassdoc, path.src.sassdoc);
 
 
+/*
+ FUNCTION SPRITES ICON
+ ==============================*/
+task.imageSprites(commands.sprites, path.src.sprites);
+
+
 /* WATCH FILES FOR RELOAD & SYNC ---> 'gulp watch'
  =================================*/
 gulp.task(commands.watch, function(){
